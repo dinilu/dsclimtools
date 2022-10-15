@@ -13,10 +13,13 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
+    dplyr,
     knitr,
+    lubridate,
     rmarkdown
 Depends:
     stars,
+    sf,
     R (>= 2.10)
 VignetteBuilder: knitr
 URL: https://github.com/dinilu/dsclimtools,

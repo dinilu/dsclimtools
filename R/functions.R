@@ -3,13 +3,16 @@
 #' @param file A string with full name (path and file name) of the .nc file to be loaded from the hard disk drive.
 #' @param sf A sf object from the sf package to be used as template or mask to crop the downscaled trace .nc file.
 #' @param proxy A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).
+#' @param ... TBW
 #'
 #' @return A stars object with the downscaled trace data.
 #' @export
 #'
+#' @import stars sf
+#'
 #' @examples # TBW
-.read_dsclim <- function(file, sf = NULL, proxy) {
-  data <- stars::read_stars(file, proxy = proxy)
+.read_dsclim <- function(file, sf = NULL, proxy, ...) {
+  data <- stars::read_stars(file, proxy = proxy, ...)
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
   }
@@ -22,9 +25,12 @@
 #' @param var A character string with the name of the variables to be loaded.
 #' @param y_start A number with the first year to be loaded.
 #' @param y_end A number with the last year to be loaded.
+#' @param rcp TBW
+#' @param gcm TBW
 #' @param calendar_dates A logical value indicating whether dates should be corrected to calendar dates.
 #' @param sf A sf object to be used for cropping the object.
 #' @param proxy A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).
+#' @param ... TBW
 #'
 #' @return A stars object with the downscaled TraCE21ka data, cropped using the sf object if provided.
 #'
@@ -32,11 +38,16 @@
 #' @export
 #'
 #' @examples # TBW
-read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
-  # folder<- "~/Med-Refugia/Output/Trace21ka_v1"
+read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE, ...){
+  # folder<- "../Output"
   # var<- "tas"
   # y_start <- 10
   # y_end <- 40
+  # rcp <- NULL
+  # gcm <- NULL
+  # calendar_dates <- FALSE
+  # sf <- NULL
+  # proxy <- TRUE
 
   if(proxy & calendar_dates){
     stop("Dates shouldn't be changed in a stars_proxy object to avoid errors when loading
@@ -50,18 +61,19 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     stop("Starting year same or higher than ending year. Provide a y_start value lower than y_end.")
   }
 
+  if(y_end > 40){
+    if(is.null(rcp) || is.null(gcm)){
+      stop("To load future data a Representative Concentration Pathway (rcp) and a Global Circulation Model (gcm) has to be specified.")
+    }
+  }
+
   if(y_start < 0 & y_end > 0){
     y_seq <- c(y_start:-1, 1:y_end)
   } else {
     y_seq <- c(y_start:y_end)
   }
-  y_seq <- split(y_seq, y_seq > 40)
 
-  if(any(y_seq > 40)){
-    if(is.null(rcp) || is.null(gcm)){
-      stop("To load future data a Representative Concentration Pathway (rcp) and a Global Circulation Model (gcm) has to be specified.")
-    }
-  }
+  y_seq <- split(y_seq, y_seq > 40)
 
   files <- NULL
   if(!is.null(y_seq$'FALSE')){
@@ -72,12 +84,11 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     }
 
   if(length(files) > 1){
-    data <- lapply(files, FUN=.read_dsclim, sf, proxy = proxy)
+    data <- lapply(files, FUN=.read_dsclim, sf, proxy = proxy, ...)
     data <- do.call(c, data)
   } else {
-    data <- .read_dsclim(files, sf, proxy = proxy)
+    data <- .read_dsclim(files, sf, proxy = proxy, ...)
   }
-  # data <- .read_dsclim(files, sf, proxy = proxy)
 
   names(data) <- var
 
@@ -217,35 +228,4 @@ flux2mm <- function(data){
   attr(data[[var]], "units") <- units
   data
 }
-
-
-
-#' Read downscaled CMIP5 datasets
-#'
-#' @param folder TBW
-#' @param var TBW
-#' @param scen TBW
-#' @param gcm TBW
-#' @param sf TBW
-#' @param ... TBW
-#'
-#' @return TBW
-#' @export
-#'
-#' @examples #TBW
-read_dscmip <- function(folder, var, scen, gcm, sf = NULL, ...){
-
-  files <- paste0(folder, "/", scen, "/", gcm, "/", var, "/", var, "1991-2100.nc")
-
-  data <- stars::read_stars(files, ...)
-
-  if(!is.null(sf)){
-    data <- sf::st_crop(data, sf)
-  }
-
-  names(data) <- var
-
-  time_2_calendar_dates(data, 41, 150)
-}
-
 
