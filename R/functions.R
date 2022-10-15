@@ -55,7 +55,14 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
   }
 
   y_start <- as.numeric(y_start)
+  if(y_start == 0){
+    y_start <- -1
+  }
+
   y_end <- as.numeric(y_end)
+  if(y_end == 0){
+    y_end <- 1
+  }
 
   if(y_start >= y_end){
     stop("Starting year same or higher than ending year. Provide a y_start value lower than y_end.")
@@ -77,7 +84,7 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 
   files <- NULL
   if(!is.null(y_seq$'FALSE')){
-    files <- append(files, paste0(folder, "/", var, "/", var, y_seq$'FALSE', ".nc"))
+    files <- append(files, paste0(folder, "/TraCE21ka/", var, "/", var, y_seq$'FALSE', ".nc"))
   }
   if(!is.null(y_seq$'TRUE')){
     files <- append(files, paste0(folder, "/CMIP5/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
