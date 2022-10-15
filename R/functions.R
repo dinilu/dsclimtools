@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples # TBW
-.read_dstrace_sf <- function(file, sf = NULL, proxy) {
+.read_dsclim <- function(file, sf = NULL, proxy) {
   data <- stars::read_stars(file, proxy = proxy)
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
@@ -32,54 +32,67 @@
 #' @export
 #'
 #' @examples # TBW
-read_dstrace <- function(folder, var, y_start, y_end, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
+read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
   # folder<- "~/Med-Refugia/Output/Trace21ka_v1"
   # var<- "tas"
   # y_start <- 10
   # y_end <- 40
-  
+
   if(proxy & calendar_dates){
     stop("Dates shouldn't be changed in a stars_proxy object to avoid errors when loading
          the data from files in the deferred read/write loop.")
-  }   
-  
+  }
+
   y_start <- as.numeric(y_start)
   y_end <- as.numeric(y_end)
-  
+
   if(y_start >= y_end){
     stop("Starting year same or higher than ending year. Provide a y_start value lower than y_end.")
   }
-  
+
   if(y_start < 0 & y_end > 0){
     y_seq <- c(y_start:-1, 1:y_end)
   } else {
     y_seq <- c(y_start:y_end)
   }
-  
-  files <- paste0(folder, "/", var, "/", var, y_seq, ".nc")
-  
+  y_seq <- split(y_seq, y_seq > 40)
+
+  if(any(y_seq > 40)){
+    if(is.null(rcp) || is.null(gcm)){
+      stop("To load future data a Representative Concentration Pathway (rcp) and a Global Circulation Model (gcm) has to be specified.")
+    }
+  }
+
+  files <- NULL
+  if(!is.null(y_seq$'FALSE')){
+    files <- append(files, paste0(folder, "/", var, "/", var, y_seq$'FALSE', ".nc"))
+  }
+  if(!is.null(y_seq$'TRUE')){
+    files <- append(files, paste0(folder, "/CMIP5/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
+    }
+
   if(length(files) > 1){
-    data <- lapply(files, FUN=.read_dstrace_sf, sf, proxy = proxy)
+    data <- lapply(files, FUN=.read_dsclim, sf, proxy = proxy)
     data <- do.call(c, data)
   } else {
-    data <- .read_dstrace_sf(files, sf, proxy = proxy)
+    data <- .read_dsclim(files, sf, proxy = proxy)
   }
-  # data <- .read_dstrace_sf(files, sf, proxy = proxy)
-  
+  # data <- .read_dsclim(files, sf, proxy = proxy)
+
   names(data) <- var
-  
+
   if(calendar_dates){
     if(sign(y_start) == 1 && sign(y_end) == 1){
       data <- time_2_calendar_dates(data, y_start, y_end)
-    } 
+    }
     if(sign(y_start) == -1 && sign(y_end) == 1) {
       data <- time_2_calendar_dates(data, y_start+1, y_end)
-    } 
+    }
     if(sign(y_start) == -1 && sign(y_end) == -1){
       data <- time_2_calendar_dates(data, y_start+1, y_end+1)
-    } 
-  } 
-  
+    }
+  }
+
   data
 }
 
@@ -126,7 +139,7 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 
 
 
-#' Read original TraCE21ka datasets 
+#' Read original TraCE21ka datasets
 #'
 #' @param folder TBW
 #' @param var TBW
@@ -135,35 +148,35 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 #' @return TBW
 #' @export
 #'
-#' @examples # TBW 
+#' @examples # TBW
 read_trace <- function(folder, var, sf = NULL){
   # folder <- "../Data/TraCE21ka"
   # var <- "TS"
   # sf <- point1
   files <- list.files(paste0(folder, "/", var), full.names = TRUE, pattern=".nc")
   data <- lapply(files, FUN = stars::read_ncdf, proxy = FALSE)
-  # data <- lapply(files, FUN = stars::read_stars) # Doesn't work because uneven grid.  
+  # data <- lapply(files, FUN = stars::read_stars) # Doesn't work because uneven grid.
   data <- do.call(c, data)
-  
+
   data <- time_2_calendar_dates(data, -21999, 40)
-  
+
   if(var %in% c("TS", "TSMX", "TSMN")){
     data <- kelvin2celsius(data)
-  }  
+  }
   if(var == "PRECC"){
     data <- flux2mm(data)
-  }  
-  
+  }
+
   if(!is.null(sf)){
     lat <- sf[2]
     lats <- stars::st_dimensions(data)$lat$value
     i <- findInterval(lat, lats)
-    
+
     data <- dplyr::filter(data, lat > floor(lats[i]), lat < ceiling(lats[i+1]))
     data <- sf::st_crop(data, sf)
-  } 
+  }
   data
-} 
+}
 
 
 #' Transform stars objects from degrees kelvin to degrees celsius
@@ -173,15 +186,15 @@ read_trace <- function(folder, var, sf = NULL){
 #' @return TBW
 #' @export
 #'
-#' @examples # TBW  
+#' @examples # TBW
 kelvin2celsius <- function(data) {
   var <- names(data)
-  data_class <- class(data[[var]])  
+  data_class <- class(data[[var]])
   data[[var]]  <- as.numeric(data[[var]]) - 273.15
   class(data[[var]]) <- data_class
   units <- list(numerator = "\u00B0C", denominator = character(0))
   class(units) <- "symbolic_units"
-  attr(data[[var]], "units") <- units 
+  attr(data[[var]], "units") <- units
   data
 }
 
@@ -196,14 +209,14 @@ kelvin2celsius <- function(data) {
 #' @examples # TBW
 flux2mm <- function(data){
   var <- names(data)
-  data_class <- class(data[[var]]) 
+  data_class <- class(data[[var]])
   data[[var]]  <- as.numeric(data[[var]]) * 2592000000
   class(data[[var]]) <-data_class
   units <- list(numerator = "mm", denominator = character(0))
   class(units) <- "symbolic_units"
-  attr(data[[var]], "units") <- units 
+  attr(data[[var]], "units") <- units
   data
-} 
+}
 
 
 
@@ -214,24 +227,24 @@ flux2mm <- function(data){
 #' @param scen TBW
 #' @param gcm TBW
 #' @param sf TBW
-#' @param ... TBW   
+#' @param ... TBW
 #'
 #' @return TBW
-#' @export 
+#' @export
 #'
-#' @examples #TBW  
+#' @examples #TBW
 read_dscmip <- function(folder, var, scen, gcm, sf = NULL, ...){
-  
+
   files <- paste0(folder, "/", scen, "/", gcm, "/", var, "/", var, "1991-2100.nc")
-  
+
   data <- stars::read_stars(files, ...)
-  
+
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
-  } 
-  
+  }
+
   names(data) <- var
-  
+
   time_2_calendar_dates(data, 41, 150)
 }
 
