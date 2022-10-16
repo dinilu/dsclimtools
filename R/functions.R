@@ -16,6 +16,7 @@
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
   }
+  gc()
   data
 }
 
@@ -61,7 +62,7 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 
   y_end <- as.numeric(y_end)
   if(y_end == 0){
-    y_end <- 1
+    y_end <- -1
   }
 
   if(y_start >= y_end){
@@ -91,10 +92,10 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     }
 
   if(length(files) > 1){
-    data <- lapply(files, FUN=.read_dsclim, sf, proxy = proxy, ...)
+    data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy, ...)
     data <- do.call(c, data)
   } else {
-    data <- .read_dsclim(files, sf, proxy = proxy, ...)
+    data <- .read_dsclim(files, sf = sf, proxy = proxy, ...)
   }
 
   names(data) <- var
