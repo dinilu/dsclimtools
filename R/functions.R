@@ -3,7 +3,6 @@
 #' @param file A string with full name (path and file name) of the .nc file to be loaded from the hard disk drive.
 #' @param sf A sf object from the sf package to be used as template or mask to crop the downscaled trace .nc file.
 #' @param proxy A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).
-#' @param ... TBW
 #'
 #' @return A stars object with the downscaled trace data.
 #' @export
@@ -11,14 +10,16 @@
 #' @import stars sf
 #'
 #' @examples # TBW
-.read_dsclim <- function(file, sf = NULL, proxy, ...) {
-  data <- stars::read_stars(file, proxy = proxy, ...)
+.read_dsclim <- function(file, sf = NULL, proxy) {
+  data <- stars::read_stars(file, proxy = proxy)
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
   }
   gc()
   data
 }
+
+
 
 #' Load downscaled TraCE21ka files by years.
 #'
@@ -31,7 +32,6 @@
 #' @param calendar_dates A logical value indicating whether dates should be corrected to calendar dates.
 #' @param sf A sf object to be used for cropping the object.
 #' @param proxy A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).
-#' @param ... TBW
 #'
 #' @return A stars object with the downscaled TraCE21ka data, cropped using the sf object if provided.
 #'
@@ -39,7 +39,7 @@
 #' @export
 #'
 #' @examples # TBW
-read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE, ...){
+read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
   # folder<- "../Output"
   # var<- "tas"
   # y_start <- 10
@@ -92,10 +92,17 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     }
 
   if(length(files) > 1){
-    data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy, ...)
+    data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy)
     data <- do.call(c, data)
+    # data <- NULL
+    # for(i in 1:length(files)){
+    #   if(i %in% seq(1, length(files), by = 100)){
+    #     message("running: ", i)
+    #   }
+    #   data <- c(data, .read_dsclim(files[i], sf = sf, proxy = proxy, ...))
+    # }
   } else {
-    data <- .read_dsclim(files, sf = sf, proxy = proxy, ...)
+    data <- .read_dsclim(files, sf = sf, proxy = proxy)
   }
 
   names(data) <- var

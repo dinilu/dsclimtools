@@ -4,7 +4,7 @@
 \alias{.read_dsclim}
 \title{Load a cropped version of downscaled TraCE21ka .nc files}
 \usage{
-.read_dsclim(file, sf = NULL, proxy, ...)
+.read_dsclim(file, sf = NULL, proxy)
 }
 \arguments{
 \item{file}{A string with full name (path and file name) of the .nc file to be loaded from the hard disk drive.}
@@ -12,8 +12,6 @@
 \item{sf}{A sf object from the sf package to be used as template or mask to crop the downscaled trace .nc file.}
 
 \item{proxy}{A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).}
-
-\item{...}{TBW}
 }
 \value{
 A stars object with the downscaled trace data.

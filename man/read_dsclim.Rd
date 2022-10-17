@@ -13,8 +13,7 @@ read_dsclim(
   gcm = NULL,
   calendar_dates = FALSE,
   sf = NULL,
-  proxy = TRUE,
-  ...
+  proxy = TRUE
 )
 }
 \arguments{
@@ -35,8 +34,6 @@ read_dsclim(
 \item{sf}{A sf object to be used for cropping the object.}
 
 \item{proxy}{A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).}
-
-\item{...}{TBW}
 }
 \value{
 A stars object with the downscaled TraCE21ka data, cropped using the sf object if provided.
