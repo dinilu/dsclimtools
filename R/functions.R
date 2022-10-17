@@ -66,12 +66,13 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     }
   }
 
-  if(y_start < 0 & y_end > 0){
-    y_seq <- c(y_start:-1, 1:y_end)
-  } else {
-    y_seq <- c(y_start:y_end)
-  }
-
+  # if(y_start < 0 & y_end > 0){
+  #   y_seq <- c(y_start:-1, 1:y_end)
+  # } else {
+  #   y_seq <- c(y_start:y_end)
+  # }
+  y_seq <- y_start:y_end
+  y_seq <- y_seq[which(y_seq != 0)]
   y_seq <- split(y_seq, y_seq > 40)
 
   # files <- paste0(folder, "/TraCE21ka/", var, "/", var, y_seq, ".nc")
