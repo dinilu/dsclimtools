@@ -15,7 +15,6 @@
   if(!is.null(sf)){
     data <- sf::st_crop(data, sf)
   }
-  gc()
   data
 }
 
@@ -40,15 +39,6 @@
 #'
 #' @examples # TBW
 read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
-  # folder<- "../Output"
-  # var<- "tas"
-  # y_start <- 10
-  # y_end <- 40
-  # rcp <- NULL
-  # gcm <- NULL
-  # calendar_dates <- FALSE
-  # sf <- NULL
-  # proxy <- TRUE
 
   if(proxy & calendar_dates){
     stop("Dates shouldn't be changed in a stars_proxy object to avoid errors when loading
@@ -56,11 +46,12 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
   }
 
   y_start <- as.numeric(y_start)
+  y_end <- as.numeric(y_end)
+
   if(y_start == 0){
     y_start <- -1
   }
 
-  y_end <- as.numeric(y_end)
   if(y_end == 0){
     y_end <- -1
   }
@@ -83,6 +74,7 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 
   y_seq <- split(y_seq, y_seq > 40)
 
+  # files <- paste0(folder, "/TraCE21ka/", var, "/", var, y_seq, ".nc")
   files <- NULL
   if(!is.null(y_seq$'FALSE')){
     files <- append(files, paste0(folder, "/TraCE21ka/", var, "/", var, y_seq$'FALSE', ".nc"))
@@ -94,13 +86,6 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
   if(length(files) > 1){
     data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy)
     data <- do.call(c, data)
-    # data <- NULL
-    # for(i in 1:length(files)){
-    #   if(i %in% seq(1, length(files), by = 100)){
-    #     message("running: ", i)
-    #   }
-    #   data <- c(data, .read_dsclim(files[i], sf = sf, proxy = proxy, ...))
-    # }
   } else {
     data <- .read_dsclim(files, sf = sf, proxy = proxy)
   }
