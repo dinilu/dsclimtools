@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   package_intro: package_intro.html
-last_built: 2022-10-16T16:54Z
+last_built: 2022-10-17T14:31Z
 urls:
   reference: http://dnietolugilde.com/dsclimtools/reference
   article: http://dnietolugilde.com/dsclimtools/articles
