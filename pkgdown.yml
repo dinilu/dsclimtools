@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   a1_dsclim_point_data: a1_dsclim_point_data.html
-last_built: 2022-10-18T11:20Z
+last_built: 2022-10-18T11:24Z
 urls:
   reference: http://dnietolugilde.com/dsclimtools/reference
   article: http://dnietolugilde.com/dsclimtools/articles
