@@ -1,5 +1,5 @@
 ---
-title: "Use dsclim data with point data"
+title: "1. Use dsclim past data with point data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{package_intro}

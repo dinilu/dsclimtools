@@ -2,3 +2,9 @@ url: http://dnietolugilde.com/dsclimtools/
 template:
   bootstrap: 5
 
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - a1_dsclim_point_data
+  - a2_dsclim_past_to_future
