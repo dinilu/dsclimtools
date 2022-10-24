@@ -2,7 +2,7 @@
 title: "1. Use dsclim past data with point data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{package_intro}
+  %\VignetteIndexEntry{1. Use dsclim past data with point data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
