@@ -50,6 +50,7 @@ figure <- figure + geom_line(data = as.data.frame(datatrace), aes(x = time, y = 
 
 figure
 ```
+
 ![Figure 2. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_fig1_plus_trace_data.png)
 
 ```{r load_chelsa_data} 

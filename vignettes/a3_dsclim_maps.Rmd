@@ -1,0 +1,122 @@
+---
+title: "3. Analyse spatio-temporal patterns"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{3. Analyse spatio-temporal patterns}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  eval = FALSE,
+  comment = "#>"
+)
+```
+
+## Dependencies
+```{r}
+library(dplyr)
+library(stars)
+library(dsclimtools)
+library(raster)
+```
+
+## Own functions
+```{r}
+slope = function(x, t) {
+  if (anyNA(x)){
+    NA_real_
+  } else {
+    lm.fit(cbind(1, t), x)$coefficients[2]
+  } 
+}
+```
+
+
+## Define parameters
+
+```{r include=FALSE}
+folder <- "../../Output"
+var <- "tas"
+```
+
+## Here we select the concrete periods in which we are interested in and we calculate the slope for them.
+```{r}
+tas_ds <- read_dsclim(folder, var, -14650, -14400, proxy = TRUE)
+t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+
+# reduce_data(-14650, -14400, folder=folder, var=var, FUN="mad", size=50)
+out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN=mad)
+write_stars(out_mad, "mad_-14650_-14400.tif", chunk_size = c(50, 50))
+plot(raster::raster("mad_-14650_-14400.tif"))
+```
+
+![Figure 1.](figures/a3/a3_fig_p1_mad.png)
+
+```{r} 
+out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
+write_stars(out_slope, "slope_-14650_-14400.tif", chunk_size = c(50, 50))
+plot(raster::raster("slope_-14650_-14400.tif"))
+```
+
+![Figure 2.](figures/a3/a3_fig_p1_slope.png)
+
+
+```{r} 
+tas_ds <- read_dsclim(folder, var, -18149, -17150, proxy = TRUE)
+t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+
+# reduce_data(-18150, -17150, folder=folder, var=var, FUN="mad", size=50)
+out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = mad)
+write_stars(out_mad, "mad_-18149_-17150.tif", chunk_size = c(50, 50))
+plot(raster::raster("mad_-18149_-17150.tif"))
+```
+
+![Figure 3.](figures/a3/a3_fig_p2_mad.png)
+
+
+```{r} 
+out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
+write_stars(out_slope, "slope_-18149_-17150.tif", chunk_size = c(50, 50))
+plot(raster::raster("slope_-18149_-17150.tif"))
+```
+
+![Figure 4.](figures/a3/a3_fig_p2_slope.png)
+
+```{r} 
+tas_ds <- read_dsclim(folder, var, -22000, 40, proxy = TRUE)
+t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+
+out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = mad)
+write_stars(out_mad, "mad_-22000_40.tif", chunk_size = c(50, 50))
+plot(raster::raster("mad_-22000_40.tif"))
+```
+
+<!-- ![Figure 5.](figures/a3/a3_fig_p3_mad.png) -->
+
+
+```{r} 
+out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope)
+write_stars(out_slope, "slope_-22000_40.tif", chunk_size = c(50, 50))
+plot(raster::raster("slope_-22000_40.tif"))
+```
+
+<!-- ![Figure 6.](figures/a3/a3_fig_p3_slope.png) -->
+
+
+```{r improve_plot} 
+figure <- figure +
+  ggplot2::theme_light() +
+  ggplot2::labs(y = "Surface Temperature (ºC)", x = "Time (calendar years)") +
+  ggplot2::coord_cartesian(xlim = as.Date(c('1980-01-01','2100-12-31'))) +
+    
+  ggplot2::scale_color_discrete(name = "Emission\npathways",
+                                guide = "legend")
+
+figure 
+```
