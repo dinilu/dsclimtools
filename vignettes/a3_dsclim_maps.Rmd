@@ -97,26 +97,14 @@ write_stars(out_mad, "mad_-22000_40.tif", chunk_size = c(50, 50))
 plot(raster::raster("mad_-22000_40.tif"))
 ```
 
-<!-- ![Figure 5.](figures/a3/a3_fig_p3_mad.png) -->
+![Figure 5.](figures/a3/a3_fig_p3_mad.png)
 
 
 ```{r} 
-out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope)
+out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t, PROGRESS = TRUE)
 write_stars(out_slope, "slope_-22000_40.tif", chunk_size = c(50, 50))
 plot(raster::raster("slope_-22000_40.tif"))
 ```
 
-<!-- ![Figure 6.](figures/a3/a3_fig_p3_slope.png) -->
+![Figure 6.](figures/a3/a3_fig_p3_slope.png)
 
-
-```{r improve_plot} 
-figure <- figure +
-  ggplot2::theme_light() +
-  ggplot2::labs(y = "Surface Temperature (ºC)", x = "Time (calendar years)") +
-  ggplot2::coord_cartesian(xlim = as.Date(c('1980-01-01','2100-12-31'))) +
-    
-  ggplot2::scale_color_discrete(name = "Emission\npathways",
-                                guide = "legend")
-
-figure 
-```
