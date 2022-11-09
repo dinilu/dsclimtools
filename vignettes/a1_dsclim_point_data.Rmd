@@ -114,3 +114,5 @@ figure +
   
 ```
 ![Figure 4. Figure 3 arranged to codify colors and linetypes.](figures/a1/a1_fig1_arranged.png)
+
+#prueba
