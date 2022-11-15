@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ## Extracting point data from downscaled climate files.
 
 Here we select the start and the end of our study period, and the locations which we are interested in. We use these values to extract information of our climate data. We also aggregate the data by ten years to avoid an excess of fluctuation in our example plot. 
@@ -100,6 +101,7 @@ figure <- figure +
 ```
 
 ![Figure 3. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_fig1_plus_chelsatrace_data.png)
+
 ## Plotting the data
 
 Here we just plot all the data together to have a look of the similarities and differences between the different sources.
