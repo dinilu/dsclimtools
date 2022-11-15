@@ -82,6 +82,11 @@
 
     
     
+<p>##Extracting point data from downscaled climate files. Here we select
+the start and the end of our study period, and the locations which we
+are interested in. We use these values to extract information of our
+climate data. We also aggregate the data by ten years to avoid an excess
+of fluctuation in our example plot.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -107,6 +112,8 @@
 <img src="figures/a1/a1_fig1_dsclim_data.png" alt=""><p class="caption">Figure 1. Mean decadal temperature as in the dsclim
 dataset for two points</p>
 </div>
+<p>##Importing TraCE21ka data Here we charge the TraCE21Ka pixel in
+which point 1 and point 2 are included.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datatrace</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_trace.html">read_trace</a></span><span class="op">(</span><span class="st">"../../Data/TraCE21ka"</span>, <span class="st">"TS"</span>, <span class="va">point1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">agg.dates</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -118,6 +125,11 @@ dataset for two points</p>
 dataset for two points and mean decadal temperature as in the original
 TraCE21ka dataset for the pixel including both points.</p>
 </div>
+<p>##Extracting CHELSA point data Here we extract point data from
+CHELSA, in this case we charged on the one hand maximum temperature and
+on the other hand minimun temperature. Once we have their point data
+(and we have made some unit conversion) we calculate average
+temperature.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">chelsa_tmax</span> <span class="op">&lt;-</span> <span class="st">"../../Data/chelsa_trace/tasmax/CHELSA_TraCE21k_tasmax_"</span></span>
 <span><span class="va">chelsa_tmin</span> <span class="op">&lt;-</span> <span class="st">"../../Data/chelsa_trace/tasmin/CHELSA_TraCE21k_tasmin_"</span></span>
@@ -152,12 +164,10 @@ TraCE21ka dataset for the pixel including both points.</p>
 <span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="va">figure</span> <span class="op">+</span> </span>
 <span>    <span class="fu">geom_step</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">chelsa1</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">attr</span>, color <span class="op">=</span> <span class="st">"#56B4E9"</span>, linetype <span class="op">=</span> <span class="st">"11"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">geom_step</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">chelsa2</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">attr</span>, color <span class="op">=</span> <span class="st">"#E69F00"</span>, linetype <span class="op">=</span> <span class="st">"11"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="figures/a1/a1_fig1_plus_chelsatrace_data.png" alt=""><p class="caption">Figure 3. Mean decadal temperature as in the dsclim
-dataset and chelsa-trace for two points, and mean decadal temperature as
-in the original TraCE21ka dataset for the pixel including both
-points.</p>
-</div>
+<p><img src="figures/a1/a1_fig1_plus_chelsatrace_data.png" alt="Figure 3. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.">
+##Plotting the data Here we just plot all the data together to have a
+look of the similarities and differences between the different
+sources.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">figure</span> <span class="op">+</span> </span>
 <span>    <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
