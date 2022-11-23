@@ -82,6 +82,12 @@
 
     
     
+<div class="section level2">
+<h2 id="loading-past-data-into-r-environment">Loading past data into R environment<a class="anchor" aria-label="anchor" href="#loading-past-data-into-r-environment"></a>
+</h2>
+<p>Here we charge the downscaled past climate data into R. For this
+example, We extract a 30 years period (i.e., 1960-1990) in two
+locations.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
@@ -104,6 +110,14 @@
 <div class="figure">
 <img src="figures/a2/a2_fig_past.png" alt=""><p class="caption">Figure 1.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="extracting-future-data-in-point-locations-for-different-climate-change-scenarios-">Extracting future data in point locations for different climate
+change scenarios.<a class="anchor" aria-label="anchor" href="#extracting-future-data-in-point-locations-for-different-climate-change-scenarios-"></a>
+</h2>
+<p>Here we extract future climate data on the same point locations for
+the different climate change scenario. We also aggregate them annually
+to simplify oscillations and get a clearer plot.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">rcps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rcp2.6"</span>, <span class="st">"rcp4.5"</span>, <span class="st">"rcp6.0"</span>, <span class="st">"rcp8.5"</span><span class="op">)</span></span>
@@ -147,6 +161,13 @@
 <div class="figure">
 <img src="figures/a2/a2_fig_past_future.png" alt=""><p class="caption">Figure 2.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="plotting-the-data">Plotting the data<a class="anchor" aria-label="anchor" href="#plotting-the-data"></a>
+</h2>
+<p>Here we just plot the data to show the smooth transition between past
+and future data and the divergence between the different climate change
+scenarios.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="va">figure</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -160,7 +181,9 @@
 <div class="figure">
 <img src="figures/a2/a2_fig_beautified.png" alt=""><p class="caption">Figure 3.</p>
 </div>
-  </main>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
