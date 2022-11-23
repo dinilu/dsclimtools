@@ -45,7 +45,12 @@ folder <- "../../Output"
 var <- "tas"
 ```
 
-## Here we select the concrete periods in which we are interested in and we calculate the slope for them.
+## Periods selection and parameters calculation.
+
+Here we select the concrete periods in which we are interested in, we charge our data for these periods and we calculate two parameters for them, the Median Absolute Deviation and the slope. We also save the results (we make the computational work by 50x50 pixels) and plot them.
+
+## -14650, -14400 period, Median Absolute Deviation
+
 ```{r}
 tas_ds <- read_dsclim(folder, var, -14650, -14400, proxy = TRUE)
 t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
@@ -58,6 +63,8 @@ plot(raster::raster("mad_-14650_-14400.tif"))
 
 ![Figure 1.](figures/a3/a3_fig_p1_mad.png)
 
+## -14650, -14400 period, Slope
+
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
 write_stars(out_slope, "slope_-14650_-14400.tif", chunk_size = c(50, 50))
@@ -66,6 +73,7 @@ plot(raster::raster("slope_-14650_-14400.tif"))
 
 ![Figure 2.](figures/a3/a3_fig_p1_slope.png)
 
+## -18149, -17150 period, Median Absolute Deviation
 
 ```{r} 
 tas_ds <- read_dsclim(folder, var, -18149, -17150, proxy = TRUE)
@@ -79,6 +87,7 @@ plot(raster::raster("mad_-18149_-17150.tif"))
 
 ![Figure 3.](figures/a3/a3_fig_p2_mad.png)
 
+## -18149, -17150 period, Slope
 
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
@@ -87,6 +96,8 @@ plot(raster::raster("slope_-18149_-17150.tif"))
 ```
 
 ![Figure 4.](figures/a3/a3_fig_p2_slope.png)
+
+## -22000, 40 period, Median Absolute Deviation
 
 ```{r} 
 tas_ds <- read_dsclim(folder, var, -22000, 40, proxy = TRUE)
@@ -99,6 +110,7 @@ plot(raster::raster("mad_-22000_40.tif"))
 
 ![Figure 5.](figures/a3/a3_fig_p3_mad.png)
 
+## -22000, 40 period, Slope
 
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t, PROGRESS = TRUE)
