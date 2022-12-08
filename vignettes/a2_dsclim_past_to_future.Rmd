@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Loading past data into R environment
 
+Here we charge the downscaled past climate data into R. For this example, We extract a 30 years period (i.e., 1960-1990) in two locations.
 
 ```{r load_past_data}
 library(dsclimtools)
@@ -42,6 +44,10 @@ past2 <- dsclimtools::read_dsclim("../../Output", "tas", 10, 40, calendar_dates 
 ```
 
 ![Figure 1.](figures/a2/a2_fig_past.png)
+
+## Extracting future data in point locations for different climate change scenarios.
+
+Here we extract future climate data on the same point locations for the different climate change scenario. We also aggregate them annually to simplify oscillations and get a clearer plot.
 
 ```{r load_future_data} 
 
@@ -87,7 +93,9 @@ figure
 
 ![Figure 2.](figures/a2/a2_fig_past_future.png)
 
+## Plotting the data
 
+Here we just plot the data to show the smooth transition between past and future data and the divergence between the different climate change scenarios.
 
 ```{r improve_plot} 
 figure <- figure +
