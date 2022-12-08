@@ -13,7 +13,8 @@
 .read_dsclim <- function(file, sf = NULL, proxy) {
   data <- stars::read_stars(file, proxy = proxy)
   if(!is.null(sf)){
-    data <- sf::st_crop(data, sf)
+    # data <- sf::st_crop(data, sf)
+    data <- stars::st_extract(data, sf)
   }
   data
 }
@@ -164,7 +165,7 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 read_trace <- function(folder, var, sf = NULL){
   # folder <- "../Data/TraCE21ka"
   # var <- "TS"
-  # sf <- point1
+  # sf <- points[1,]
   files <- list.files(paste0(folder, "/", var), full.names = TRUE, pattern=".nc")
   data <- lapply(files, FUN = stars::read_ncdf, proxy = FALSE)
   # data <- lapply(files, FUN = stars::read_stars) # Doesn't work because uneven grid.
@@ -180,7 +181,7 @@ read_trace <- function(folder, var, sf = NULL){
   }
 
   if(!is.null(sf)){
-    lat <- sf[2]
+    lat <- st_coordinates(sf)[,2]
     lats <- stars::st_dimensions(data)$lat$value
     i <- findInterval(lat, lats)
 

@@ -29,15 +29,12 @@ end <- 40
 
 agg.dates <- calendar_dates(start, end + 10, by =  "10 year")
 
-point1 <- c(0, 41.5) %>% matrix(1, 2) %>% sf::st_point(x = ., dim = "XYZ")
-point2 <- c(0, 42.8) %>% matrix(1, 2) %>% sf::st_point(x = ., dim = "XYZ")
+points <- c(0, 0, 41.5, 42.8) %>% matrix(ncol = 2, nrow = 2) %>% data.frame(id = c("p1", "p2")) %>% sf::st_as_sf(coords = c("X1", "X2"))
 
-data1 <- dsclimtools::read_dsclim( "../../Output", "tas", start, end, calendar_dates = TRUE, sf = point1, proxy = FALSE) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
-data2 <- dsclimtools::read_dsclim( "../../Output", "tas", start, end, calendar_dates = TRUE, sf = point2, proxy = FALSE) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
- 
+data <- dsclimtools::read_dsclim( "../../Output", "tas", start, end, calendar_dates = TRUE, sf = points, proxy = FALSE) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE) 
+
 figure <- ggplot() +
-    geom_line(data = as.data.frame(data1), aes(x = time, y = tas, color = "#56B4E9", linetype = "f1")) +
-    geom_line(data = as.data.frame(data2), aes(x = time, y = tas, color = "#E69F00", linetype = "f1"))
+    geom_line(data = as.data.frame(data), aes(x = time, y = tas, colour = st_as_text(geometry), linetype = "f1"))
 
 figure
 ```
@@ -49,9 +46,10 @@ figure
 Here we charge the TraCE21Ka pixel in which point 1 and point 2 are included.
 
 ```{r load_trace_data} 
-datatrace <- dsclimtools::read_trace("../../Data/TraCE21ka", "TS", point1) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
+# datatrace <- dsclimtools::read_trace("../../Data/TraCE21ka", "TS", point1) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
+datatrace <- dsclimtools::read_trace("../../Data/TraCE21ka", "TS", st_set_crs(points[1,], 4326)) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
 
-figure <- figure + geom_line(data = as.data.frame(datatrace), aes(x = time, y = TS, color = "#000000", linetype = "solid"))
+figure <- figure + geom_line(data = as.data.frame(datatrace), aes(x = time, y = TS, colour = "#000000", linetype = "solid"))
 
 figure
 ```
@@ -94,9 +92,10 @@ chelsa2 <- ((chelsa_tmax_pixel2 + chelsa_tmin_pixel2) / 2) %>% aggregate(dsclimt
 
 
 figure <- figure + 
-    geom_step(data = as.data.frame(chelsa1), aes(x = time, y = attr, color = "#56B4E9", linetype = "11")) +
-    geom_step(data = as.data.frame(chelsa2), aes(x = time, y = attr, color = "#E69F00", linetype = "11"))
+    geom_step(data = as.data.frame(chelsa1), aes(x = time, y = attr, colour = "POINT (0 41.5)", linetype = "11")) +
+    geom_step(data = as.data.frame(chelsa2), aes(x = time, y = attr, colour = "POINT (0 42.8)", linetype = "11"))
 
+figure
 ```
 
 ![Figure 3. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_fig1_plus_chelsatrace_data.png)
@@ -112,18 +111,14 @@ figure +
     labs(y = "Surface Temperature (ºC)", x = "Time (calendar years)") +
     coord_cartesian(xlim = c(lubridate::ymd("1950-01-01") + c(lubridate::years(-21150), lubridate::years(240)))) +
     
-    scale_color_identity(name = "Location",
-                                  breaks = c("#000000",
-                                             "#E69F00",
-                                             "#56B4E9"),
-                                  labels = c("Trace pixel",
-                                             "Point A",
-                                             "Point B"),
-                                  guide = "legend") +
     scale_linetype_identity(name = "Data source",
-                                     breaks = c("solid", "f1", "11"),
-                                     labels = c("TraCE21ka", "dsclim", "Chelsa-TraCE"),
-                                     guide = "legend")
+                            breaks = c("solid", "f1", "11"),
+                            labels = c("TraCE21ka", "dsclim", "Chelsa-TraCE"),
+                            guide = "legend") +
   
+    scale_color_manual(values=c("#000000", "#E69F00", "#56B4E9"),
+                       labels = c("Trace pixel", "Point A", "Point B"),
+                       guide = "legend",
+                       name = "Location")
 ```
 ![Figure 4. Figure 3 arranged to codify colors and linetypes.](figures/a1/a1_fig1_arranged.png)
