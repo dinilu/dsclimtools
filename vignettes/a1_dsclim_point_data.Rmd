@@ -30,7 +30,7 @@ end <- 40
 
 agg.dates <- calendar_dates(start, end + 10, by =  "10 year")
 
-points <- c(0, 41.5, 0, 42.8) %>% matrix(ncol = 2, nrow = 4, byrow = TRUE) %>% as.data.frame() %>% sf::st_as_sf(coords = c("V1", "V2"))
+points <- c(0, 0, 41.5, 42.8) %>% matrix(ncol = 2, nrow = 4) %>% as.data.frame() %>% sf::st_as_sf(coords = c("V1", "V2"))
 
 data <- dsclimtools::read_dsclim( "../../Output", "tas", start, end, calendar_dates = TRUE, sf = points, proxy = FALSE) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE) 
 
