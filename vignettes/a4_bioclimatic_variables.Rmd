@@ -142,3 +142,4 @@ options(gganimate.dev_args = list(width = 600, height = 400))
 gganim <- gg + transition_manual(year)
 ```
 
+![Figure X. Animation](figures/a4/glm_timeseries.gif)
