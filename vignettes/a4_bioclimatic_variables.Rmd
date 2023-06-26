@@ -84,17 +84,18 @@ bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
 We prepared presence and background data for running an example of species distribution model. We extracted the environmental values of the current bioclimatic variables calculated as done earlier.  
 
 ```{r}
-presences <- read.csv("filtered_occurrences.csv") %>% select(-c(1:2))
+presences <- system.file("extdata", "filtered_occurrences.csv", package = "dsclimtools") %>% read.csv() %>% select(-c(1:2))
 set.seed(1)
-background <- randomPoints(topo14_mask, 400)
 
-Present_bioclim <- stack("../Output/TraCE21ka/bioclim/1140_bio.tif")
-topo14_mask <- raster("topo14_mask.tif")
+Present_bioclim <- system.file("extdata", "1140_bio.tif", package = "dsclimtools") %>% stack()
+topo14_mask <- system.file("extdata", "topo14_mask.tif", package = "dsclimtools") %>% raster()
+
+background <- randomPoints(topo14_mask, 400, presences)
 
 presvals <- extract(Present_bioclim, presences, na.rm = TRUE)
 presvals <-  presvals[!rowSums(is.na(presvals)),]
 
-absvals <- extract(Present_bioclim, background,  na.rm = TRUE)
+absvals <- extract(Present_bioclim, background, na.rm = TRUE)
 absvals <-  absvals[!rowSums(is.na(absvals)),]
 
 pb <- c(rep(1, nrow(presvals)), rep(0, nrow(absvals)))
