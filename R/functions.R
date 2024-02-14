@@ -79,10 +79,10 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
   # files <- paste0(folder, "/TraCE21ka/", var, "/", var, y_seq, ".nc")
   files <- NULL
   if(!is.null(y_seq$'FALSE')){
-    files <- append(files, paste0(folder, "/TraCE21ka/", var, "/", var, y_seq$'FALSE', ".nc"))
+    files <- append(files, paste0(folder, "/trace21ka/", var, "/", var, y_seq$'FALSE', ".nc"))
   }
   if(!is.null(y_seq$'TRUE')){
-    files <- append(files, paste0(folder, "/CMIP5/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
+    files <- append(files, paste0(folder, "/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
     }
 
   if(length(files) > 1){
