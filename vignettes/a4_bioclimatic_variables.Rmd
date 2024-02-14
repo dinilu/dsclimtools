@@ -59,10 +59,10 @@ end <- -14400
 Here we load our climatic data for the specified period. We use the stars_to_stack function to transform the loaded data into a list in which each element is a raster stack of the twelve month of each year.
 
 ```{r}
-tmax <- dsclimtools::read_dsclim( "../../Output", "tasmax", start, end, calendar_dates = TRUE, proxy = FALSE)
-tmin <- dsclimtools::read_dsclim( "../../Output", "tasmin", start, end, calendar_dates = TRUE, proxy = FALSE) 
-t <- dsclimtools::read_dsclim( "../../Output", "tas", start, end, calendar_dates = TRUE, proxy = FALSE) 
-prec <- dsclimtools::read_dsclim( "../../Output", "pr", start, end, calendar_dates = TRUE, proxy = FALSE)
+tmax <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmax", start, end, calendar_dates = TRUE, proxy = FALSE)
+tmin <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmin", start, end, calendar_dates = TRUE, proxy = FALSE) 
+t <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tas", start, end, calendar_dates = TRUE, proxy = FALSE) 
+prec <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "pr", start, end, calendar_dates = TRUE, proxy = FALSE)
 
 tmax <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmax)
 tmin <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmin)
