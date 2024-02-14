@@ -71,9 +71,11 @@ prec <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, prec)
 
 ```
 
+![Figure 1. Maximun Temperature](images/tmax.png){width="600"}
+
 ## Bioclimatic variables calculation
 
-Finally, we calculate the 19 bioclimatic variables for our interest period. We store them as a list in which each element is a raster stack of the 19 bioclimatic variables 
+Finally, we calculate the 19 bioclimatic variables for our interest period. We store them as a list in which each element is a raster stack of the 19 bioclimatic variables
 
 ```{r}
 bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
@@ -81,7 +83,7 @@ bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
 
 ## SDM data preparation
 
-We prepared presence and background data for running an example of species distribution model. We extracted the environmental values of the current bioclimatic variables calculated as done earlier.  
+We prepared presence and absence data for running an example of species distribution model. We extracted the environmental values of the current bioclimatic variables calculated as done earlier.
 
 ```{r}
 presences <- system.file("extdata", "filtered_occurrences.csv", package = "dsclimtools") %>% read.csv() %>% select(-c(1:2))
@@ -90,12 +92,12 @@ set.seed(1)
 Present_bioclim <- system.file("extdata", "1140_bio.tif", package = "dsclimtools") %>% stack()
 topo14_mask <- system.file("extdata", "topo14_mask.tif", package = "dsclimtools") %>% raster()
 
-background <- randomPoints(topo14_mask, 400, presences)
+absences <- randomPoints(topo14_mask, 400, presences)
 
 presvals <- raster::extract(Present_bioclim, presences, na.rm = TRUE)
 presvals <-  presvals[!rowSums(is.na(presvals)),]
 
-absvals <- raster::extract(Present_bioclim, background, na.rm = TRUE)
+absvals <- raster::extract(Present_bioclim, absences, na.rm = TRUE)
 absvals <-  absvals[!rowSums(is.na(absvals)),]
 
 pb <- c(rep(1, nrow(presvals)), rep(0, nrow(absvals)))
@@ -104,7 +106,7 @@ sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
 
 ## GLM calibration and projection
 
-Here we calibrated a Generalized Linear Model for our presence/background dataset. Further, we projected the model over our selected period to exemplify the power of our dataset in biogeografical history studies. 
+Here we calibrated a Generalized Linear Model for our presence/absence dataset. Further, we projected the model over our selected period to exemplify the power of our dataset in biogeografical history studies.
 
 ```{r}
 model <-  glm(pb ~ bio1 + bio2 + bio3 + bio4 + bio5 + bio6 + bio7 + 
@@ -120,7 +122,7 @@ pred_data <- lapply(pred_data, FUN = as.data.frame, xy = TRUE, na.rm = TRUE) %>%
 
 ## Graphical animation
 
-Finally, we represented graphically the fluctuations of the model along the selected period.
+Finally, we represented graphically the fluctuations of the species potential distribution along the selected period.
 
 ```{r}
 pred_data$L1 <- pred_data$L1 %>% as.numeric %>% as.factor
@@ -143,4 +145,4 @@ options(gganimate.dev_args = list(width = 600, height = 400))
 gganim <- gg + transition_manual(year)
 ```
 
-![Figure X. Animation](figures/a4/glm_timeseries.gif)
+![Figure 2. SDM Animation](figures/a4/glm_timeseries.gif)
