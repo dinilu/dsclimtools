@@ -2,7 +2,7 @@
 title: "4. Calculate bioclimatic variables and SDM"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{4. Calculate bioclimatic variables}
+  %\VignetteIndexEntry{4. Calculate bioclimatic variables and SDM}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
