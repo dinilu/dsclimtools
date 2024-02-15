@@ -84,29 +84,23 @@
     
     
 <div class="section level2">
-<h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+<h2 id="dependencies-and-functions">Dependencies and functions<a class="anchor" aria-label="anchor" href="#dependencies-and-functions"></a>
 </h2>
+<p>Here we load the required packages and our own function to calculate
+the slope.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="own-functions">Own functions<a class="anchor" aria-label="anchor" href="#own-functions"></a>
-</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">slope</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">t</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">slope</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">t</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">anyNA</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="cn">NA_real_</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">lm.fit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">t</span><span class="op">)</span>, <span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
 <span>  <span class="op">}</span> </span>
 <span><span class="op">}</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="define-parameters">Define parameters<a class="anchor" aria-label="anchor" href="#define-parameters"></a>
-</h2>
 </div>
 <div class="section level2">
 <h2 id="periods-selection-and-parameters-calculation-">Periods selection and parameters calculation.<a class="anchor" aria-label="anchor" href="#periods-selection-and-parameters-calculation-"></a>
@@ -120,7 +114,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-median-absolute-deviation">-14650, -14400 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">14650</span>, <span class="op">-</span><span class="fl">14400</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
 <span></span>
@@ -135,7 +129,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-slope">-14650, -14400 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-14650_-14400.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-14650_-14400.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -146,7 +140,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-median-absolute-deviation-1">-18149, -17150 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation-1"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">18149</span>, <span class="op">-</span><span class="fl">17150</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
 <span></span>
@@ -161,7 +155,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-slope-1">-18149, -17150 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope-1"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-18149_-17150.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-18149_-17150.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -172,7 +166,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-median-absolute-deviation-2">-22000, 40 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation-2"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">22000</span>, <span class="fl">40</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
 <span></span>
@@ -186,7 +180,7 @@ them.</p>
 <div class="section level2">
 <h2 id="period-slope-2">-22000, 40 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope-2"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span>, PROGRESS <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-22000_40.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-22000_40.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
