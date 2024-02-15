@@ -18,16 +18,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Dependencies
+## Dependencies and functions
+
+Here we load the required packages and our own function to calculate the slope.
+
 ```{r}
 library(dplyr)
 library(stars)
 library(dsclimtools)
 library(raster)
-```
 
-## Own functions
-```{r}
 slope = function(x, t) {
   if (anyNA(x)){
     NA_real_
@@ -35,10 +35,9 @@ slope = function(x, t) {
     lm.fit(cbind(1, t), x)$coefficients[2]
   } 
 }
+
 ```
 
-
-## Define parameters
 
 ```{r include=FALSE}
 folder <- "../../Output"
