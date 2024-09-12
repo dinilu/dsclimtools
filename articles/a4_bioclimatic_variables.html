@@ -68,11 +68,22 @@
 
     
     
+<p>It is standard practice in biogeography studies to derive new
+variables from existing climatic data, as this makes it easier to
+interpret the data ecologically. One example of this is the calculation
+of bioclimate variables. Furthermore, these variables are typically
+employed as inputs for ecological modelling tools, such as Species
+Distribution Models (SDMs), which correlate them with species
+occurrences to estimate potential distribution across an area of
+interest. In this example, we have calculated a set of bioclimatic
+variables for the specified study period and used them to calibrate a
+Species Distribution Model (SDM).</p>
 <div class="section level2">
 <h2 id="dependencies-and-functions">Dependencies and functions<a class="anchor" aria-label="anchor" href="#dependencies-and-functions"></a>
 </h2>
-<p>Here we load the necessary packages and our own functions to convert
-stars object to raster stack and project the model predictions.</p>
+<p>In this step, we load the necessary packages and our own functions in
+order to convert the star object to a raster stack and project the
+resulting model predictions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
@@ -99,7 +110,7 @@ stars object to raster stack and project the model predictions.</p>
 <div class="section level2">
 <h2 id="period-selection">Period selection<a class="anchor" aria-label="anchor" href="#period-selection"></a>
 </h2>
-<p>Here we specify our interest period</p>
+<p>In this section, we outline the period of interest.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">14500</span></span>
 <span><span class="va">end</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">14400</span></span></code></pre></div>
@@ -107,9 +118,9 @@ stars object to raster stack and project the model predictions.</p>
 <div class="section level2">
 <h2 id="extraction-of-source-climatic-data">Extraction of source climatic data<a class="anchor" aria-label="anchor" href="#extraction-of-source-climatic-data"></a>
 </h2>
-<p>Here we load our climatic data for the specified period. We use the
-stars_to_stack function to transform the loaded data into a list in
-which each element is a raster stack of the twelve month of each
+<p>In this step, we load the climatic data for the specified period. The
+data is transformed into a list using the stars_to_stack function, with
+each element representing a raster stack of the twelve months in each
 year.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tasmax"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -128,18 +139,19 @@ year.</p>
 <div class="section level2">
 <h2 id="bioclimatic-variables-calculation">Bioclimatic variables calculation<a class="anchor" aria-label="anchor" href="#bioclimatic-variables-calculation"></a>
 </h2>
-<p>Finally, we calculate the 19 bioclimatic variables for our interest
-period. We store them as a list in which each element is a raster stack
-of the 19 bioclimatic variables</p>
+<p>We have now calculated the 19 bioclimatic variables for the specified
+period of interest. The data is stored as a list, with each element
+representing a raster stack of the 19 bioclimatic variables.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bio_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="fu">dismo</span><span class="fu">::</span><span class="va">biovars</span>, <span class="va">prec</span>, <span class="va">tmin</span>, <span class="va">tmax</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sdm-data-preparation">SDM data preparation<a class="anchor" aria-label="anchor" href="#sdm-data-preparation"></a>
 </h2>
-<p>We prepared presence and absence data for running an example of
-species distribution model. We extracted the environmental values of the
-current bioclimatic variables calculated as done earlier.</p>
+<p>We have prepared the presence and absence data in order to run an
+example of a species distribution model. The environmental values of the
+current bioclimatic variables were extracted in the same way as
+previously described.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Beetles"</span><span class="op">)</span></span>
 <span></span>
@@ -167,10 +179,10 @@ current bioclimatic variables calculated as done earlier.</p>
 <div class="section level2">
 <h2 id="glm-calibration-and-projection">GLM calibration and projection<a class="anchor" aria-label="anchor" href="#glm-calibration-and-projection"></a>
 </h2>
-<p>Here we calibrated a Generalized Linear Model for our
-presence/absence dataset. Further, we projected the model over our
-selected period to exemplify the power of our dataset in biogeografical
-history studies.</p>
+<p>We calibrated a Generalized Linear Model for our presence/absence
+dataset. Furthermore, we projected the model over the selected period to
+demonstrate the value of our dataset in biogeographical history
+studies.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">pb</span> <span class="op">~</span> <span class="va">bio1</span> <span class="op">+</span> <span class="va">bio2</span> <span class="op">+</span> <span class="va">bio3</span> <span class="op">+</span> <span class="va">bio4</span> <span class="op">+</span> <span class="va">bio5</span> <span class="op">+</span> <span class="va">bio6</span> <span class="op">+</span> <span class="va">bio7</span> <span class="op">+</span> </span>
 <span>                <span class="va">bio8</span> <span class="op">+</span> <span class="va">bio9</span> <span class="op">+</span> <span class="va">bio10</span> <span class="op">+</span> <span class="va">bio11</span> <span class="op">+</span> <span class="va">bio12</span> <span class="op">+</span> <span class="va">bio13</span> <span class="op">+</span> <span class="va">bio14</span> <span class="op">+</span></span>
@@ -185,8 +197,9 @@ history studies.</p>
 <div class="section level2">
 <h2 id="graphical-animation">Graphical animation<a class="anchor" aria-label="anchor" href="#graphical-animation"></a>
 </h2>
-<p>Finally, we represented graphically the fluctuations of the species
-potential distribution along the selected period.</p>
+<p>We have also presented a graphical representation of the fluctuations
+in the potential distribution of the species over the selected
+period.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op">&lt;-</span> <span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.numeric</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.factor</span></span>
 <span></span>
