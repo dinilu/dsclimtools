@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Dependencies and functions
 
-Here we load the required packages and our own function to calculate the slope.
+In this phase, we load the necessary packages and our own function to calculate the slope, which is an indicator of climate stability.
 
 ```{r}
 library(dplyr)
@@ -46,7 +46,7 @@ var <- "tas"
 
 ## Periods selection and parameters calculation.
 
-Here we select the concrete periods in which we are interested in, we charge our data for these periods and we calculate two parameters for them, the Median Absolute Deviation and the slope. We also save the results (we make the computational work by 50x50 pixels) and plot them.
+One of the key applications of the package is to facilitate the study of spatio-temporal patterns during the selected period in our study area. This is a crucial aspect of biogeographical studies, where climate stability is a significant factor. For example, we select the specific time periods of interest and load the corresponding data, calculating two parameters for each period. The Median Absolute Deviation and the slope are two metrics that provide valuable insights into climate stability. The Median Absolute Deviation offers a proxy for understanding the long-term variations in climate, while the slope serves as an indicator of the predominant direction of these changes. Once the computational work is complete, we save our example results and plot them for analysis.
 
 ## -14650, -14400 period, Median Absolute Deviation
 
