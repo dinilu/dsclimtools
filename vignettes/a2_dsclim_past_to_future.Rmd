@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Loading past data into R environment
 
-It is crucial to ensure a seamless transition between data from different sources when utilising climate data for past and future periods. This is particularly important when the overlapping period data source is the same. We have illustrated this concept through a graphical representation in this vignette. To exemplify, we will load the downscaled past climate data into R and extract a 30-year period (i.e., 1960-1990) in two locations.
+It is crucial to ensure a seamless transition between data from different sources when utilising climate data for past and future periods. This is important even when the overlapping period data source is the same. We have illustrated this concept through a graphical representation in this vignette. To exemplify, we will load the downscaled past climate data into R and extract a 30-year period (i.e., 1960-1990) in two locations.
 
 ```{r load_past_data}
 library(dsclimtools)
