@@ -15,9 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+It is standard practice in biogeography studies to derive new variables from existing climatic data, as this makes it easier to interpret the data ecologically. One example of this is the calculation of bioclimate variables. Furthermore, these variables are typically employed as inputs for ecological modelling tools, such as Species Distribution Models (SDMs), which correlate them with species occurrences to estimate potential distribution across an area of interest. In this example, we have calculated a set of bioclimatic variables for the specified study period and used them to calibrate a Species Distribution Model (SDM).
+
 ## Dependencies and functions
 
-Here we load the necessary packages and our own functions to convert stars object to raster stack and project the model predictions.
+In this step, we load the necessary packages and our own functions in order to convert the star object to a raster stack and project the resulting model predictions.
 
 ```{r}
 library(dsclimtools)
@@ -45,7 +47,7 @@ model.projection <- function(p, predictors_list, land, model) {
 
 ## Period selection
 
-Here we specify our interest period
+In this section, we outline the period of interest.
 
 ```{r}
 start <- -14500
@@ -54,7 +56,7 @@ end <- -14400
 
 ## Extraction of source climatic data
 
-Here we load our climatic data for the specified period. We use the stars_to_stack function to transform the loaded data into a list in which each element is a raster stack of the twelve month of each year.
+In this step, we load the climatic data for the specified period. The data is transformed into a list using the stars_to_stack function, with each element representing a raster stack of the twelve months in each year.
 
 ```{r}
 tmax <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmax", start, end, calendar_dates = TRUE, proxy = FALSE)
@@ -73,7 +75,7 @@ prec <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, prec)
 
 ## Bioclimatic variables calculation
 
-Finally, we calculate the 19 bioclimatic variables for our interest period. We store them as a list in which each element is a raster stack of the 19 bioclimatic variables
+We have now calculated the 19 bioclimatic variables for the specified period of interest. The data is stored as a list, with each element representing a raster stack of the 19 bioclimatic variables.
 
 ```{r}
 bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
@@ -81,7 +83,7 @@ bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
 
 ## SDM data preparation
 
-We prepared presence and absence data for running an example of species distribution model. We extracted the environmental values of the current bioclimatic variables calculated as done earlier.
+We have prepared the presence and absence data in order to run an example of a species distribution model. The environmental values of the current bioclimatic variables were extracted in the same way as previously described.
 
 ```{r}
 data("Beetles")
@@ -110,7 +112,7 @@ sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
 
 ## GLM calibration and projection
 
-Here we calibrated a Generalized Linear Model for our presence/absence dataset. Further, we projected the model over our selected period to exemplify the power of our dataset in biogeografical history studies.
+We calibrated a Generalized Linear Model for our presence/absence dataset. Furthermore, we projected the model over the selected period to demonstrate the value of our dataset in biogeographical history studies.
 
 ```{r}
 model <-  glm(pb ~ bio1 + bio2 + bio3 + bio4 + bio5 + bio6 + bio7 + 
@@ -126,7 +128,7 @@ pred_data <- lapply(pred_data, FUN = as.data.frame, xy = TRUE, na.rm = TRUE) %>%
 
 ## Graphical animation
 
-Finally, we represented graphically the fluctuations of the species potential distribution along the selected period.
+We have also presented a graphical representation of the fluctuations in the potential distribution of the species over the selected period.
 
 ```{r}
 pred_data$L1 <- pred_data$L1 %>% as.numeric %>% as.factor
