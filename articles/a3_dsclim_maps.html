@@ -71,8 +71,8 @@
 <div class="section level2">
 <h2 id="dependencies-and-functions">Dependencies and functions<a class="anchor" aria-label="anchor" href="#dependencies-and-functions"></a>
 </h2>
-<p>Here we load the required packages and our own function to calculate
-the slope.</p>
+<p>In this phase, we load the necessary packages and our own function to
+calculate the slope, which is an indicator of climate stability.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
@@ -90,11 +90,18 @@ the slope.</p>
 <div class="section level2">
 <h2 id="periods-selection-and-parameters-calculation-">Periods selection and parameters calculation.<a class="anchor" aria-label="anchor" href="#periods-selection-and-parameters-calculation-"></a>
 </h2>
-<p>Here we select the concrete periods in which we are interested in, we
-charge our data for these periods and we calculate two parameters for
-them, the Median Absolute Deviation and the slope. We also save the
-results (we make the computational work by 50x50 pixels) and plot
-them.</p>
+<p>One of the key applications of the package is to facilitate the study
+of spatio-temporal patterns during the selected period in our study
+area. This is a crucial aspect of biogeographical studies, where climate
+stability is a significant factor. For example, we select the specific
+time periods of interest and load the corresponding data, calculating
+two parameters for each period. The Median Absolute Deviation and the
+slope are two metrics that provide valuable insights into climate
+stability. The Median Absolute Deviation offers a proxy for
+understanding the long-term variations in climate, while the slope
+serves as an indicator of the predominant direction of these changes.
+Once the computational work is complete, we save our example results and
+plot them for analysis.</p>
 </div>
 <div class="section level2">
 <h2 id="period-median-absolute-deviation">-14650, -14400 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation"></a>
