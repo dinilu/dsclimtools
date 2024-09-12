@@ -1,57 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/404.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/articles/a1_dsclim_point_data.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/articles/a2_dsclim_past_to_future.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/articles/a3_dsclim_maps.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/articles/a4_bioclimatic_variables.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/authors.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/index.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/news/index.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/calendar_dates.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/dot-read_dsclim.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/flux2mm.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/kelvin2celsius.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/read_dsclim.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/read_trace.html</loc>
-  </url>
-  <url>
-    <loc>http://dnietolugilde.com/dsclimtools/reference/time_2_calendar_dates.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>http://dnietolugilde.com/dsclimtools/404.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/LICENSE.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/articles/a1_dsclim_point_data.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/articles/a2_dsclim_past_to_future.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/articles/a3_dsclim_maps.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/articles/a4_bioclimatic_variables.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/articles/index.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/authors.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/index.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/news/index.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/calendar_dates.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/dot-read_dsclim.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/flux2mm.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/index.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/kelvin2celsius.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/read_dsclim.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/read_trace.html</loc></url>
+<url><loc>http://dnietolugilde.com/dsclimtools/reference/time_2_calendar_dates.html</loc></url>
 </urlset>
+

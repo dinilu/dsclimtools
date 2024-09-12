@@ -1,13 +1,12 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   a1_dsclim_point_data: a1_dsclim_point_data.html
   a2_dsclim_past_to_future: a2_dsclim_past_to_future.html
   a3_dsclim_maps: a3_dsclim_maps.html
   a4_bioclimatic_variables: a4_bioclimatic_variables.html
-last_built: 2024-02-15T08:56Z
+last_built: 2024-09-12T08:17Z
 urls:
   reference: http://dnietolugilde.com/dsclimtools/reference
   article: http://dnietolugilde.com/dsclimtools/articles
-
