@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 ## Extracting point data from downscaled climate files.
 
-Here we select the start and the end of our study period, and the locations which we are interested in. We use these values to extract information of our climate data. We also aggregate the data by ten years to avoid an excess of fluctuation in our example plot. 
+One of the key benefits of having higher-resolution data is the ability to distinguish between different climatic conditions in nearby areas with varying topography. At lower resolutions, these conditions were often grouped into a single pixel, represented by a single value. To demonstrate this, we will select the start and end dates of our study period, as well as the locations of interest. We will then extract information from our climate data and aggregate it by ten years to avoid fluctuations in our example plot.
 
 ```{r load_dsclim_data}
 library(dsclimtools)
@@ -44,7 +44,7 @@ figure
 
 ## Importing TraCE21ka data
 
-Here we charge the TraCE21Ka pixel in which point 1 and point 2 are included.
+The objective is to compare the higher resolution data with its lower resolution counterpart and test if the downscaled data accurately reflects the differences between the two points. In this case, we are focusing on the TraCE21Ka pixel, which includes points 1 and 2.
 
 ```{r load_trace_data} 
 # datatrace <- dsclimtools::read_trace("../../Data/TraCE21ka", "TS", point1) %>% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)
@@ -59,7 +59,7 @@ figure
 
 ## Extracting CHELSA point data
 
-Here we extract point data from CHELSA, in this case we charged on the one hand maximum temperature and on the other hand minimun temperature. Once we have their point data (and we have made some unit conversion) we calculate average temperature.
+During the development of this dataset, we conducted an external data validation exercise with the aim of uncovering any potential procedure bias. To this end, we extracted point data from CHELSA TraCE21k, focusing on both maximum and minimum temperature. Following the collection of this data and the completion of necessary unit conversion, we proceeded to calculate the average temperature.
 
 ```{r load_chelsa_data} 
 chelsa_tmax <- "../../Data/chelsa_trace/tasmax/CHELSA_TraCE21k_tasmax_"
@@ -103,7 +103,7 @@ figure
 
 ## Plotting the data
 
-Here we just plot all the data together to have a look of the similarities and differences between the different sources.
+The objective here is to plot all the data together in order to gain insight into the similarities and differences between the various sources.
 
 ```{r finish_plot} 
 figure + 
