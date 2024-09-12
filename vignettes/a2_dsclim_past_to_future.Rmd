@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Loading past data into R environment
 
-Here we charge the downscaled past climate data into R. For this example, We extract a 30 years period (i.e., 1960-1990) in two locations.
+It is crucial to ensure a seamless transition between data from different sources when utilising climate data for past and future periods. This is particularly important when the overlapping period data source is the same. We have illustrated this concept through a graphical representation in this vignette. To exemplify, we will load the downscaled past climate data into R and extract a 30-year period (i.e., 1960-1990) in two locations.
 
 ```{r load_past_data}
 library(dsclimtools)
@@ -47,7 +47,7 @@ past2 <- dsclimtools::read_dsclim("../../Output", "tas", 10, 40, calendar_dates 
 
 ## Extracting future data in point locations for different climate change scenarios.
 
-Here we extract future climate data on the same point locations for the different climate change scenario. We also aggregate them annually to simplify oscillations and get a clearer plot.
+In this section, we present future climate data extracted from the same point locations for the various climate change scenarios. Furthermore, the data is aggregated on an annual basis in order to simplify any potential oscillations and provide a clearer visual representation.
 
 ```{r load_future_data} 
 
@@ -95,7 +95,7 @@ figure
 
 ## Plotting the data
 
-Here we just plot the data to show the smooth transition between past and future data and the divergence between the different climate change scenarios.
+The objective of this plot is to demonstrate the gradual transition between past and future data, as well as the divergence between the various climate change scenarios.
 
 ```{r improve_plot} 
 figure <- figure +
