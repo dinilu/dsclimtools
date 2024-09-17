@@ -76,14 +76,17 @@ employed as inputs for ecological modelling tools, such as Species
 Distribution Models (SDMs), which correlate them with species
 occurrences to estimate potential distribution across an area of
 interest. In this example, we have calculated a set of bioclimatic
-variables for the specified study period and used them to calibrate a
-Species Distribution Model (SDM).</p>
+variables for the specified study periods and used them to calibrate a
+Species Distribution Model (SDM) which was projected into past
+conditions.</p>
 <div class="section level2">
 <h2 id="dependencies-and-functions">Dependencies and functions<a class="anchor" aria-label="anchor" href="#dependencies-and-functions"></a>
 </h2>
 <p>In this step, we load the necessary packages and our own functions in
-order to convert the star object to a raster stack and project the
-resulting model predictions.</p>
+order to convert the star object to a raster stack (we transform our
+data from cube format into a stack to use typicall functions of spatial
+analysis ) and project the resulting model predictions into the
+past.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
@@ -107,52 +110,133 @@ resulting model predictions.</p>
 <span>  <span class="va">prediction</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="period-selection">Period selection<a class="anchor" aria-label="anchor" href="#period-selection"></a>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="period-selection">Period selection<a class="anchor" aria-label="anchor" href="#period-selection"></a>
 </h2>
-<p>In this section, we outline the period of interest.</p>
+<p>In this section, we outline the periods of interest.</p>
+
+
+<ul class="nav nav-pills" id="period-selection" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#present" id="present-tab" type="button" role="tab" aria-controls="present" aria-selected="true" class="active nav-link">PRESENT</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#past" id="past-tab" type="button" role="tab" aria-controls="past" aria-selected="false" class="nav-link">PAST</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="present" role="tabpanel" aria-labelledby="present-tab">
+
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">present_start</span> <span class="op">&lt;-</span> <span class="fl">11</span></span>
+<span><span class="va">present_end</span> <span class="op">&lt;-</span> <span class="fl">40</span></span></code></pre></div>
+</div>
+<div class="tab-pane" id="past" role="tabpanel" aria-labelledby="past-tab">
+
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">14500</span></span>
 <span><span class="va">end</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">14400</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="extraction-of-source-climatic-data">Extraction of source climatic data<a class="anchor" aria-label="anchor" href="#extraction-of-source-climatic-data"></a>
+</div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="extraction-of-source-climatic-data">Extraction of source climatic data<a class="anchor" aria-label="anchor" href="#extraction-of-source-climatic-data"></a>
 </h2>
 <p>In this step, we load the climatic data for the specified period. The
 data is transformed into a list using the stars_to_stack function, with
 each element representing a raster stack of the twelve months in each
 year.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tasmax"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">tmin</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tasmin"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tas"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
-<span><span class="va">prec</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"pr"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+
+
+<ul class="nav nav-pills" id="extraction-of-source-climatic-data" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#present-1" id="present-1-tab" type="button" role="tab" aria-controls="present-1" aria-selected="true" class="active nav-link">PRESENT</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#past-1" id="past-1-tab" type="button" role="tab" aria-controls="past-1" aria-selected="false" class="nav-link">PAST</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="present-1" role="tabpanel" aria-labelledby="present-1-tab">
+
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">present_tmax</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"../../Public/Data/dsclim_v1/netcdf/"</span>, <span class="st">"tasmax"</span>,</span>
+<span>                             <span class="va">present_start</span>, <span class="va">present_end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">present_tmin</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"../../Public/Data/dsclim_v1/netcdf/"</span>, <span class="st">"tasmin"</span>,</span>
+<span>                             <span class="va">present_start</span>, <span class="va">present_end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
+<span><span class="va">present_prec</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"../../Public/Data/dsclim_v1/netcdf/"</span>, <span class="st">"pr"</span>,</span>
+<span>                             <span class="va">present_start</span>, <span class="va">present_end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">present_tmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">present_tmax</span><span class="op">)</span></span>
+<span><span class="va">present_tmin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">present_tmin</span><span class="op">)</span></span>
+<span><span class="va">present_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">present_prec</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="images/present_tmax.png" width="600" alt="Figure 1. Maximun Temperature"><div class="figcaption">Figure 1. Maximun Temperature</div>
+</div>
+</div>
+<div class="tab-pane" id="past-1" role="tabpanel" aria-labelledby="past-1-tab">
+
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tasmax"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tmin</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"tasmin"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
+<span><span class="va">prec</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"X:/Data/dsclim_v1/netcdf"</span>, <span class="st">"pr"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">tmax</span><span class="op">)</span></span>
 <span><span class="va">tmin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">tmin</span><span class="op">)</span></span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">t</span><span class="op">)</span></span>
 <span><span class="va">prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">prec</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="images/tmax.png" width="600" alt="Figure 1. Maximun Temperature"><div class="figcaption">Figure 1. Maximun Temperature</div>
+<img src="images/tmax.png" width="600" alt="Figure 2. Maximun Temperature"><div class="figcaption">Figure 2. Maximun Temperature</div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="bioclimatic-variables-calculation">Bioclimatic variables calculation<a class="anchor" aria-label="anchor" href="#bioclimatic-variables-calculation"></a>
+</div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="bioclimatic-variables-calculation">Bioclimatic variables calculation<a class="anchor" aria-label="anchor" href="#bioclimatic-variables-calculation"></a>
 </h2>
 <p>We have now calculated the 19 bioclimatic variables for the specified
-period of interest. The data is stored as a list, with each element
-representing a raster stack of the 19 bioclimatic variables.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bio_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="fu">dismo</span><span class="fu">::</span><span class="va">biovars</span>, <span class="va">prec</span>, <span class="va">tmin</span>, <span class="va">tmax</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+periods of interest in accordance with the agreed specifications. The
+data is stored in the form of a list, with each element representing a
+raster stack of the 19 bioclimatic variables. Please note that for the
+present period, the mean has been calculated in order to create a unique
+grid for each variable, which will be used later in the model
+calibration process. In both cases, we selected the variables that we
+intend to use in our model. As this example has been developed based on
+the guidance set out in <a href="https://rspatial.org/raster/sdm/raster_SDM.pdf" class="external-link uri">https://rspatial.org/raster/sdm/raster_SDM.pdf</a>, we have
+maintained consistency in the bioclimatic variables used. It is
+important to note that this is solely for illustrative purposes. In
+actual modelling, it would be advisable to select variables based on
+their ecological impact on the study species and their correlation.</p>
+
+
+<ul class="nav nav-pills" id="bioclimatic-variables-calculation" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#present-2" id="present-2-tab" type="button" role="tab" aria-controls="present-2" aria-selected="true" class="active nav-link">PRESENT</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#past-2" id="past-2-tab" type="button" role="tab" aria-controls="past-2" aria-selected="false" class="nav-link">PAST</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="present-2" role="tabpanel" aria-labelledby="present-2-tab">
+
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">present_bio_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="fu">dismo</span><span class="fu">::</span><span class="va">biovars</span>, <span class="va">present_prec</span>, <span class="va">present_tmin</span>, <span class="va">present_tmax</span>,</span>
+<span>                           SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">Present_bioclim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="fu">reduce</span><span class="op">(</span><span class="va">present_bio_list</span>, <span class="va">`+`</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">present_bio_list</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">12</span>,<span class="fl">16</span>,<span class="fl">17</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="tab-pane" id="past-2" role="tabpanel" aria-labelledby="past-2-tab">
+
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bio_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="fu">dismo</span><span class="fu">::</span><span class="va">biovars</span>, <span class="va">prec</span>, <span class="va">tmin</span>, <span class="va">tmax</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">12</span>,<span class="fl">16</span>,<span class="fl">17</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="sdm-data-preparation">SDM data preparation<a class="anchor" aria-label="anchor" href="#sdm-data-preparation"></a>
 </h2>
 <p>We have prepared the presence and absence data in order to run an
-example of a species distribution model. The environmental values of the
-current bioclimatic variables were extracted in the same way as
-previously described.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+example of a species distribution model. Please note that we have loaded
+a topography mask to ensure that all points are within the designated
+land area. The pseudo-absences points were generated randomly. Once the
+required data had been collated, we extracted the current values of the
+selected variables for the specified locations.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Beetles"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">presences</span> <span class="op">&lt;-</span> <span class="va">Beetles</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -162,7 +246,6 @@ previously described.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">Present_bioclim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"1140_bio.tif"</span>, package <span class="op">=</span> <span class="st">"dsclimtools"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">topo14_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"topo14_mask.tif"</span>, package <span class="op">=</span> <span class="st">"dsclimtools"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">raster</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">absences</span> <span class="op">&lt;-</span> <span class="fu">randomPoints</span><span class="op">(</span><span class="va">topo14_mask</span>, <span class="fl">400</span>, <span class="va">presences</span><span class="op">)</span></span>
@@ -179,36 +262,47 @@ previously described.</p>
 <div class="section level2">
 <h2 id="glm-calibration-and-projection">GLM calibration and projection<a class="anchor" aria-label="anchor" href="#glm-calibration-and-projection"></a>
 </h2>
-<p>We calibrated a Generalized Linear Model for our presence/absence
-dataset. Furthermore, we projected the model over the selected period to
-demonstrate the value of our dataset in biogeographical history
-studies.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">pb</span> <span class="op">~</span> <span class="va">bio1</span> <span class="op">+</span> <span class="va">bio2</span> <span class="op">+</span> <span class="va">bio3</span> <span class="op">+</span> <span class="va">bio4</span> <span class="op">+</span> <span class="va">bio5</span> <span class="op">+</span> <span class="va">bio6</span> <span class="op">+</span> <span class="va">bio7</span> <span class="op">+</span> </span>
-<span>                <span class="va">bio8</span> <span class="op">+</span> <span class="va">bio9</span> <span class="op">+</span> <span class="va">bio10</span> <span class="op">+</span> <span class="va">bio11</span> <span class="op">+</span> <span class="va">bio12</span> <span class="op">+</span> <span class="va">bio13</span> <span class="op">+</span> <span class="va">bio14</span> <span class="op">+</span></span>
-<span>                <span class="va">bio15</span> <span class="op">+</span> <span class="va">bio16</span> <span class="op">+</span> <span class="va">bio17</span> <span class="op">+</span> <span class="va">bio18</span> <span class="op">+</span> <span class="va">bio19</span>, data<span class="op">=</span><span class="va">sdmdata</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<p>We calibrated a Generalized Linear Model for our dataset in line with
+the specified requirements. Moreover, we projected the model over the
+selected period to illustrate the value of our dataset in
+biogeographical history studies.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">pb</span> <span class="op">~</span> <span class="va">bio1</span> <span class="op">+</span> <span class="va">bio5</span> <span class="op">+</span> <span class="va">bio6</span> <span class="op">+</span> <span class="va">bio7</span> <span class="op">+</span> <span class="va">bio8</span> <span class="op">+</span> <span class="va">bio12</span> <span class="op">+</span> <span class="va">bio16</span> <span class="op">+</span> </span>
+<span>                <span class="va">bio17</span>, data<span class="op">=</span><span class="va">sdmdata</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pred_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">101</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">model.projection</span>, <span class="va">bio_list</span>, <span class="va">topo14_mask</span>, <span class="va">model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pred_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="op">-</span><span class="fl">14500</span><span class="op">:</span><span class="op">-</span><span class="fl">14400</span><span class="op">)</span></span>
 <span><span class="va">pred_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pred_data</span>, FUN <span class="op">=</span> <span class="va">as.data.frame</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">reshape2</span><span class="fu">::</span><span class="fu">melt</span><span class="op">(</span>id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"layer"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">L1</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="graphical-animation">Graphical animation<a class="anchor" aria-label="anchor" href="#graphical-animation"></a>
-</h2>
-<p>We have also presented a graphical representation of the fluctuations
-in the potential distribution of the species over the selected
-period.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op">&lt;-</span> <span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.numeric</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.factor</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">L1</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op">&lt;-</span> <span class="va">pred_data</span><span class="op">$</span><span class="va">L1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.numeric</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.factor</span></span>
 <span></span>
 <span><span class="va">years_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">14500</span>, <span class="op">-</span><span class="fl">14400</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">pred_data</span><span class="op">$</span><span class="va">year</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">years_list</span>, FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">last</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">pred_data</span><span class="op">$</span><span class="va">year</span> <span class="op">&lt;-</span> <span class="va">pred_data</span><span class="op">$</span><span class="va">year</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.character</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.numeric</span></span>
-<span></span>
-<span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span></span>
+<span><span class="va">pred_data</span><span class="op">$</span><span class="va">year</span> <span class="op">&lt;-</span> <span class="va">pred_data</span><span class="op">$</span><span class="va">year</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.character</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.numeric</span></span></code></pre></div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="plotting-the-data">Plotting the data<a class="anchor" aria-label="anchor" href="#plotting-the-data"></a>
+</h2>
+<p>Furthermore, we have provided a graphical illustration of the
+fluctuations in the potential distribution of the species over the
+specified period. Additionally, we have calculated the pixel mean value
+and identified those which have a mean value greater than 0.7, which we
+believe will be of interest to those engaged in biogeographical studies
+such as the identification of refugia.</p>
+
+
+<ul class="nav nav-pills" id="plotting-the-data" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#grafical-animation" id="grafical-animation-tab" type="button" role="tab" aria-controls="grafical-animation" aria-selected="true" class="active nav-link">GRAFICAL ANIMATION</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#over-threshold-map" id="over-threshold-map-tab" type="button" role="tab" aria-controls="over-threshold-map" aria-selected="false" class="nav-link">OVER THRESHOLD MAP</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="grafical-animation" role="tabpanel" aria-labelledby="grafical-animation-tab">
+
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span></span>
 <span>  <span class="va">pred_data</span>, </span>
 <span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, fill <span class="op">=</span> <span class="va">layer</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">+</span></span>
@@ -222,7 +316,27 @@ period.</p>
 <span></span>
 <span><span class="fu">animate</span><span class="op">(</span><span class="va">gganim</span>, duration <span class="op">=</span> <span class="fl">60</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">400</span>, renderer <span class="op">=</span> <span class="fu">gifski_renderer</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures/a4/timeseries.gif" alt="Figure 2. SDM Animation"><div class="figcaption">Figure 2. SDM Animation</div>
+<img src="figures/a4/glm_timeseries.gif" alt="Figure 3. SDM Animation"><div class="figcaption">Figure 3. SDM Animation</div>
+</div>
+</div>
+<div class="tab-pane" id="over-threshold-map" role="tabpanel" aria-labelledby="over-threshold-map-tab">
+
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mean_data</span> <span class="op">&lt;-</span> <span class="va">pred_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">layer</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>th_layer <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">mean_layer</span> <span class="op">&gt;=</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>                              <span class="va">mean_layer</span> <span class="op">&lt;</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">mean_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_raster</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, fill <span class="op">=</span> <span class="va">th_layer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_viridis_c</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<div class="float">
+<img src="figures/a4/th_map.png" width="631" alt="Figure 4. SDM over threshold"><div class="figcaption">Figure 4. SDM over threshold</div>
+</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
