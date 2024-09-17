@@ -156,11 +156,15 @@ sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
 
 ## GLM calibration and projection
 
-We calibrated a Generalized Linear Model for our dataset in line with the specified requirements. Moreover, we projected the model over the selected period to illustrate the value of our dataset in biogeographical history studies.
+We calibrated a Generalized Linear Model for our dataset in line with the specified requirements. Moreover, we projected the model over current conditions as well as the selected period conditions to illustrate the value of our dataset in biogeographical history studies.
 
 ```{r}
 model <-  glm(pb ~ bio1 + bio5 + bio6 + bio7 + bio8 + bio12 + bio16 + 
                 bio17, data=sdmdata, family = "binomial")
+
+present_prediction <- Present_bioclim %>% raster::mask(topo14_mask) %>% 
+  predict(model, type = "response") %>% 
+  as.data.frame(xy = TRUE) %>% na.omit()
 
 pred_data <- lapply(seq(1,101), FUN = model.projection, bio_list, topo14_mask, model)
 names(pred_data) <- paste0(-14500:-14400)
@@ -178,7 +182,20 @@ pred_data$year <- pred_data$year %>% as.character %>% as.numeric
 
 ## Plotting the data {.tabset .tabset-pills}
 
-Furthermore, we have provided a graphical illustration of the fluctuations in the potential distribution of the species over the specified period. Additionally, we have calculated the pixel mean value and identified those which have a mean value greater than 0.7, which we believe will be of interest to those engaged in biogeographical studies such as the identification of refugia.
+Furthermore, we have provided a graphical illustration of the fluctuations in the potential distribution of the species over the specified period, as well as its current predicted distribution. Additionally, we have calculated the pixel mean value and identified those which have a mean value greater than 0.7, which we believe will be of interest to those engaged in biogeographical studies such as the identification of refugia.
+
+### CURRENT PREDICTED DISTRIBUTION
+
+```{r}
+
+present_prediction %>% ggplot() +
+  geom_raster(aes(x = x, y = y, fill = layer)) +
+  scale_fill_viridis_c() +
+  theme_bw() + theme(axis.title.x = element_blank(), axis.title.y = element_blank()) 
+
+```
+
+![Figure 3. Current Predicted Distribution](figures/a4/present_map.png){width="640"}
 
 ### GRAFICAL ANIMATION
 
@@ -199,7 +216,7 @@ animate(gganim, duration = 60, width = 600, height = 400, renderer = gifski_rend
 
 ```
 
-![Figure 3. SDM Animation](figures/a4/glm_timeseries.gif)
+![Figure 4. SDM Animation](figures/a4/glm_timeseries.gif)
 
 ### OVER THRESHOLD MAP
 
@@ -218,4 +235,4 @@ mean_data %>% ggplot() +
 
 ```
 
- ![Figure 4. SDM over threshold](figures/a4/th_map.png){width="631"}
+![Figure 5. SDM over threshold](figures/a4/th_map.png){width="631"}
