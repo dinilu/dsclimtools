@@ -1,6 +1,6 @@
 ---
 title: "4. Calculate bioclimatic variables and SDM"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{4. Calculate bioclimatic variables and SDM}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-It is standard practice in biogeography studies to derive new variables from existing climatic data, as this makes it easier to interpret the data ecologically. One example of this is the calculation of bioclimate variables. Furthermore, these variables are typically employed as inputs for ecological modelling tools, such as Species Distribution Models (SDMs), which correlate them with species occurrences to estimate potential distribution across an area of interest. In this example, we have calculated a set of bioclimatic variables for the specified study period and used them to calibrate a Species Distribution Model (SDM).
+It is standard practice in biogeography studies to derive new variables from existing climatic data, as this makes it easier to interpret the data ecologically. One example of this is the calculation of bioclimate variables. Furthermore, these variables are typically employed as inputs for ecological modelling tools, such as Species Distribution Models (SDMs), which correlate them with species occurrences to estimate potential distribution across an area of interest. In this example, we have calculated a set of bioclimatic variables for the specified study periods and used them to calibrate a Species Distribution Model (SDM) which was projected into past conditions.
 
 ## Dependencies and functions
 
-In this step, we load the necessary packages and our own functions in order to convert the star object to a raster stack and project the resulting model predictions.
+In this step, we load the necessary packages and our own functions in order to convert the star object to a raster stack (we transform our data from cube format into a stack to use typicall functions of spatial analysis ) and project the resulting model predictions into the past.
 
 ```{r}
 library(dsclimtools)
@@ -45,45 +45,90 @@ model.projection <- function(p, predictors_list, land, model) {
 }
 ```
 
-## Period selection
+## Period selection {.tabset .tabset-pills}
 
-In this section, we outline the period of interest.
+In this section, we outline the periods of interest.
 
-```{r}
+### PRESENT
+
+```{r present_period}
+present_start <- 11
+present_end <- 40
+```
+
+### PAST
+
+```{r past_period}
 start <- -14500
 end <- -14400
 ```
 
-## Extraction of source climatic data
+## Extraction of source climatic data {.tabset .tabset-pills}
 
 In this step, we load the climatic data for the specified period. The data is transformed into a list using the stars_to_stack function, with each element representing a raster stack of the twelve months in each year.
 
+### PRESENT
+
 ```{r}
-tmax <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmax", start, end, calendar_dates = TRUE, proxy = FALSE)
-tmin <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmin", start, end, calendar_dates = TRUE, proxy = FALSE) 
-t <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tas", start, end, calendar_dates = TRUE, proxy = FALSE) 
-prec <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "pr", start, end, calendar_dates = TRUE, proxy = FALSE)
+present_tmax <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "tasmax",
+                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE)
+present_tmin <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "tasmin",
+                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE) 
+present_prec <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "pr",
+                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE)
+
+present_tmax <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_tmax)
+present_tmin <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_tmin)
+present_prec <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_prec)
+```
+
+![Figure 1. Maximun Temperature](images/present_tmax.png){width="600"}
+
+### PAST
+
+```{r}
+tmax <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmax", start, end, calendar_dates = TRUE,
+                                  proxy = FALSE)
+tmin <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmin", start, end, calendar_dates = TRUE,
+                                  proxy = FALSE) 
+prec <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "pr", start, end, calendar_dates = TRUE,
+                                  proxy = FALSE)
 
 tmax <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmax)
 tmin <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmin)
-t <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, t)
 prec <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, prec)
 
 ```
 
-![Figure 1. Maximun Temperature](images/tmax.png){width="600"}
+![Figure 2. Maximun Temperature](images/tmax.png){width="600"}
 
-## Bioclimatic variables calculation
+## Bioclimatic variables calculation {.tabset .tabset-pills}
 
-We have now calculated the 19 bioclimatic variables for the specified period of interest. The data is stored as a list, with each element representing a raster stack of the 19 bioclimatic variables.
+We have now calculated the 19 bioclimatic variables for the specified periods of interest in accordance with the agreed specifications. The data is stored in the form of a list, with each element representing a raster stack of the 19 bioclimatic variables. Please note that for the present period, the mean has been calculated in order to create a unique grid for each variable, which will be used later in the model calibration process. In both cases, we selected the variables that we intend to use in our model. As this example has been developed based on the guidance set out in <https://rspatial.org/raster/sdm/raster_SDM.pdf>, we have maintained consistency in the bioclimatic variables used. It is important to note that this is solely for illustrative purposes. In actual modelling, it would be advisable to select variables based on their ecological impact on the study species and their correlation.
+
+### PRESENT
 
 ```{r}
-bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE)
+present_bio_list <- mapply(dismo::biovars, present_prec, present_tmin, present_tmax,
+                           SIMPLIFY = FALSE)
+
+Present_bioclim <- stack(reduce(present_bio_list, `+`)/length(present_bio_list)) %>% 
+  subset(c(1,5,6,7,8,12,16,17))
+```
+
+### PAST
+
+```{r}
+bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE) %>% 
+  lapply(function(x){
+    subset(x, c(1,5,6,7,8,12,16,17))
+  })
+
 ```
 
 ## SDM data preparation
 
-We have prepared the presence and absence data in order to run an example of a species distribution model. The environmental values of the current bioclimatic variables were extracted in the same way as previously described.
+We have prepared the presence and absence data in order to run an example of a species distribution model. Please note that we have loaded a topography mask to ensure that all points are within the designated land area. The pseudo-absences points were generated randomly. Once the required data had been collated, we extracted the current values of the selected variables for the specified locations.
 
 ```{r}
 data("Beetles")
@@ -95,7 +140,6 @@ presences <- Beetles %>%
 
 set.seed(1)
 
-Present_bioclim <- system.file("extdata", "1140_bio.tif", package = "dsclimtools") %>% stack()
 topo14_mask <- system.file("extdata", "topo14_mask.tif", package = "dsclimtools") %>% raster()
 
 absences <- randomPoints(topo14_mask, 400, presences)
@@ -112,32 +156,33 @@ sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
 
 ## GLM calibration and projection
 
-We calibrated a Generalized Linear Model for our presence/absence dataset. Furthermore, we projected the model over the selected period to demonstrate the value of our dataset in biogeographical history studies.
+We calibrated a Generalized Linear Model for our dataset in line with the specified requirements. Moreover, we projected the model over the selected period to illustrate the value of our dataset in biogeographical history studies.
 
 ```{r}
-model <-  glm(pb ~ bio1 + bio2 + bio3 + bio4 + bio5 + bio6 + bio7 + 
-                bio8 + bio9 + bio10 + bio11 + bio12 + bio13 + bio14 +
-                bio15 + bio16 + bio17 + bio18 + bio19, data=sdmdata, family = "binomial")
+model <-  glm(pb ~ bio1 + bio5 + bio6 + bio7 + bio8 + bio12 + bio16 + 
+                bio17, data=sdmdata, family = "binomial")
 
 pred_data <- lapply(seq(1,101), FUN = model.projection, bio_list, topo14_mask, model)
 names(pred_data) <- paste0(-14500:-14400)
 pred_data <- lapply(pred_data, FUN = as.data.frame, xy = TRUE, na.rm = TRUE) %>% 
   reshape2::melt(id.vars = c("x", "y", "layer")) %>% 
   mutate(year = as.numeric(L1)) 
-```
 
-## Graphical animation
-
-We have also presented a graphical representation of the fluctuations in the potential distribution of the species over the selected period.
-
-```{r}
 pred_data$L1 <- pred_data$L1 %>% as.numeric %>% as.factor
 
 years_list <- seq(-14500, -14400, by = 1)
 
 levels(pred_data$year) <- unlist(lapply(years_list, FUN=function(x)last(x)))
 pred_data$year <- pred_data$year %>% as.character %>% as.numeric
+```
 
+## Plotting the data {.tabset .tabset-pills}
+
+Furthermore, we have provided a graphical illustration of the fluctuations in the potential distribution of the species over the specified period. Additionally, we have calculated the pixel mean value and identified those which have a mean value greater than 0.7, which we believe will be of interest to those engaged in biogeographical studies such as the identification of refugia.
+
+### GRAFICAL ANIMATION
+
+```{r}
 gg <- ggplot(
   pred_data, 
   aes(x = x, y = y, fill = layer)
@@ -151,6 +196,26 @@ options(gganimate.dev_args = list(width = 600, height = 400))
 gganim <- gg + transition_manual(year)
 
 animate(gganim, duration = 60, width = 600, height = 400, renderer = gifski_renderer())
+
 ```
 
-![Figure 2. SDM Animation](figures/a4/timeseries.gif)
+![Figure 3. SDM Animation](figures/a4/glm_timeseries.gif)
+
+### OVER THRESHOLD MAP
+
+```{r}
+mean_data <- pred_data %>% 
+  group_by(x, y) %>% 
+  summarize(mean_layer = mean(layer)) %>% 
+  mutate(th_layer = case_when(mean_layer >= 0.7 ~ 1,
+                              mean_layer < 0.7 ~ 0))
+
+
+mean_data %>% ggplot() +
+  geom_raster(aes(x = x, y = y, fill = th_layer)) +
+  scale_fill_viridis_c() +
+  theme_bw() + theme(axis.title.x = element_blank(), axis.title.y = element_blank()) 
+
+```
+
+ ![Figure 4. SDM over threshold](figures/a4/th_map.png){width="631"}
