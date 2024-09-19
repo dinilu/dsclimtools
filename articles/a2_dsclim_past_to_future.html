@@ -98,7 +98,7 @@ downscaled past climate data into R and extract a 30-year period (i.e.,
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">geom_line</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://r-quantities.github.io/units/reference/drop_units.html" class="external-link">drop_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">past2</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">tas</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"#E69F00"</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">geom_line</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://r-quantities.github.io/units/reference/drop_units.html" class="external-link">drop_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">past2</span>, by <span class="op">=</span> <span class="fu"><a href="../reference/calendar_dates.html">calendar_dates</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">41</span>, <span class="st">"1 year"</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">tas</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"#E69F00"</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures/a2/a2_fig_past.png" alt="Figure 1."><div class="figcaption">Figure 1.</div>
+<img src="figures%2Fa2%2Fa2_fig_past.png" alt="Figure 1."><div class="figcaption">Figure 1.</div>
 </div>
 </div>
 <div class="section level2">
@@ -151,7 +151,7 @@ representation.</p>
 <span></span>
 <span><span class="va">figure</span></span></code></pre></div>
 <div class="float">
-<img src="figures/a2/a2_fig_past_future.png" alt="Figure 2."><div class="figcaption">Figure 2.</div>
+<img src="figures%2Fa2%2Fa2_fig_past_future.png" alt="Figure 2."><div class="figcaption">Figure 2.</div>
 </div>
 </div>
 <div class="section level2">
@@ -171,7 +171,7 @@ various climate change scenarios.</p>
 <span></span>
 <span><span class="va">figure</span> </span></code></pre></div>
 <div class="float">
-<img src="figures/a2/a2_fig_beautified.png" alt="Figure 3."><div class="figcaption">Figure 3.</div>
+<img src="figures%2Fa2%2Fa2_fig_beautified.png" alt="Figure 3."><div class="figcaption">Figure 3.</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -185,7 +185,7 @@ various climate change scenarios.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

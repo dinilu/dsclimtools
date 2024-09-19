@@ -163,7 +163,7 @@ year.</p>
 <span><span class="va">present_tmin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">present_tmin</span><span class="op">)</span></span>
 <span><span class="va">present_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">present_prec</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="images/present_tmax.png" width="600" alt="Figure 1. Maximun Temperature"><div class="figcaption">Figure 1. Maximun Temperature</div>
+<img src="images%2Fpresent_tmax.png" width="600" alt="Figure 1. Maximun Temperature"><div class="figcaption">Figure 1. Maximun Temperature</div>
 </div>
 </div>
 <div class="tab-pane" id="past-1" role="tabpanel" aria-labelledby="past-1-tab">
@@ -180,7 +180,7 @@ year.</p>
 <span><span class="va">tmin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">tmin</span><span class="op">)</span></span>
 <span><span class="va">prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1212</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">stars_to_stack</span>, <span class="va">prec</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="images/tmax.png" width="600" alt="Figure 2. Maximun Temperature"><div class="figcaption">Figure 2. Maximun Temperature</div>
+<img src="images%2Ftmax.png" width="600" alt="Figure 2. Maximun Temperature"><div class="figcaption">Figure 2. Maximun Temperature</div>
 </div>
 </div>
 </div>
@@ -316,7 +316,7 @@ identification of refugia.</p>
 <span>  <span class="fu">scale_fill_viridis_c</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <div class="float">
-<img src="figures/a4/present_map.png" width="640" alt="Figure 3. Current Predicted Distribution"><div class="figcaption">Figure 3. Current Predicted Distribution</div>
+<img src="figures%2Fa4%2Fpresent_map.png" width="640" alt="Figure 3. Current Predicted Distribution"><div class="figcaption">Figure 3. Current Predicted Distribution</div>
 </div>
 </div>
 <div class="tab-pane" id="grafical-animation" role="tabpanel" aria-labelledby="grafical-animation-tab">
@@ -336,7 +336,7 @@ identification of refugia.</p>
 <span></span>
 <span><span class="fu">animate</span><span class="op">(</span><span class="va">gganim</span>, duration <span class="op">=</span> <span class="fl">60</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">400</span>, renderer <span class="op">=</span> <span class="fu">gifski_renderer</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures/a4/glm_timeseries.gif" alt="Figure 4. SDM Animation"><div class="figcaption">Figure 4. SDM Animation</div>
+<img src="figures%2Fa4%2Fglm_timeseries.gif" alt="Figure 4. SDM Animation"><div class="figcaption">Figure 4. SDM Animation</div>
 </div>
 </div>
 <div class="tab-pane" id="over-threshold-map" role="tabpanel" aria-labelledby="over-threshold-map-tab">
@@ -354,7 +354,7 @@ identification of refugia.</p>
 <span>  <span class="fu">scale_fill_viridis_c</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <div class="float">
-<img src="figures/a4/th_map.png" width="631" alt="Figure 5. SDM over threshold"><div class="figcaption">Figure 5. SDM over threshold</div>
+<img src="figures%2Fa4%2Fth_map.png" width="631" alt="Figure 5. SDM over threshold"><div class="figcaption">Figure 5. SDM over threshold</div>
 </div>
 </div>
 </div>
@@ -370,7 +370,7 @@ identification of refugia.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
