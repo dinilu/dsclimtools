@@ -68,8 +68,9 @@
 
     
     
-<div class="section level2">
-<h2 id="extracting-point-data-from-downscaled-climate-files-">Extracting point data from downscaled climate files.<a class="anchor" aria-label="anchor" href="#extracting-point-data-from-downscaled-climate-files-"></a>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="extracting-point-data-from-downscaled-climate-files-">Extracting point data from downscaled
+climate files.<a class="anchor" aria-label="anchor" href="#extracting-point-data-from-downscaled-climate-files-"></a>
 </h2>
 <p>One of the key benefits of having higher-resolution data is the
 ability to distinguish between different climatic conditions in nearby
@@ -79,6 +80,15 @@ To demonstrate this, we will select the start and end dates of our study
 period, as well as the locations of interest. We will then extract
 information from our climate data and aggregate it by ten years to avoid
 fluctuations in our example plot.</p>
+
+
+<ul class="nav nav-pills" id="extracting-point-data-from-downscaled-climate-files-" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#ts" id="ts-tab" type="button" role="tab" aria-controls="ts" aria-selected="true" class="active nav-link">TS</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#pr" id="pr-tab" type="button" role="tab" aria-controls="pr" aria-selected="false" class="nav-link">PR</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="ts" role="tabpanel" aria-labelledby="ts-tab">
+
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -102,28 +112,79 @@ fluctuations in our example plot.</p>
 dsclim dataset for two points</div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="importing-trace21ka-data">Importing TraCE21ka data<a class="anchor" aria-label="anchor" href="#importing-trace21ka-data"></a>
+<div class="tab-pane" id="pr" role="tabpanel" aria-labelledby="pr-tab">
+
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dinilu/dsclimtools" class="external-link">dsclimtools</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">start</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">22000</span></span>
+<span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fl">40</span></span>
+<span></span>
+<span><span class="va">agg.dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calendar_dates.html">calendar_dates</a></span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, by <span class="op">=</span>  <span class="st">"10 year"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, long <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41.5</span>, <span class="fl">42.8</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"long"</span>, <span class="st">"lat"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span> <span class="st">"../../Output"</span>, <span class="st">"pr"</span>, <span class="va">start</span>, <span class="va">end</span>, calendar_dates <span class="op">=</span> <span class="cn">TRUE</span>, sf <span class="op">=</span> <span class="va">points</span>, proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">agg.dates</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_line</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">pr</span>, colour <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_text.html" class="external-link">st_as_text</a></span><span class="op">(</span><span class="va">geometry</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"f1"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">figure</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa1%2Fa1_pr_dsclim.png" alt="Figure 2. Decadal precipitation as in the dsclim dataset for two points"><div class="figcaption">Figure 2. Decadal precipitation as in the dsclim
+dataset for two points</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="importing-trace21ka-data">Importing TraCE21ka data<a class="anchor" aria-label="anchor" href="#importing-trace21ka-data"></a>
 </h2>
 <p>The objective is to compare the higher resolution data with its lower
 resolution counterpart and test if the downscaled data accurately
 reflects the differences between the two points. In this case, we are
 focusing on the TraCE21Ka pixel, which includes points 1 and 2.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># datatrace &lt;- dsclimtools::read_trace("../../Data/TraCE21ka", "TS", point1) %&gt;% aggregate(by = agg.dates, FUN = mean, na.rm = TRUE)</span></span>
-<span><span class="va">datatrace</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_trace.html">read_trace</a></span><span class="op">(</span><span class="st">"../../Data/TraCE21ka"</span>, <span class="st">"TS"</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">points</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="fl">4326</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">agg.dates</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+
+
+<ul class="nav nav-pills" id="importing-trace21ka-data" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#ts-1" id="ts-1-tab" type="button" role="tab" aria-controls="ts-1" aria-selected="true" class="active nav-link">TS</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#pr-1" id="pr-1-tab" type="button" role="tab" aria-controls="pr-1" aria-selected="false" class="nav-link">PR</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="ts-1" role="tabpanel" aria-labelledby="ts-1-tab">
+
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datatrace</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_trace.html">read_trace</a></span><span class="op">(</span><span class="st">"../../Data/TraCE21ka"</span>, <span class="st">"TS"</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">points</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="fl">4326</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">agg.dates</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="va">figure</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">datatrace</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">TS</span>, colour <span class="op">=</span> <span class="st">"#000000"</span>, linetype <span class="op">=</span> <span class="st">"solid"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">figure</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa1%2Fa1_fig1_plus_trace_data.png" alt="Figure 2. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 2. Mean decadal temperature as in the
+<img src="figures%2Fa1%2Fa1_fig1_plus_trace_data.png" alt="Figure 3. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 3. Mean decadal temperature as in the
 dsclim dataset for two points and mean decadal temperature as in the
 original TraCE21ka dataset for the pixel including both points.</div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="extracting-chelsa-point-data">Extracting CHELSA point data<a class="anchor" aria-label="anchor" href="#extracting-chelsa-point-data"></a>
+<div class="tab-pane" id="pr-1" role="tabpanel" aria-labelledby="pr-1-tab">
+
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datatrace</span> <span class="op">&lt;-</span> <span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/read_trace.html">read_trace</a></span><span class="op">(</span><span class="st">"../../Data/TraCE21ka"</span>, <span class="st">"PRECC"</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">points</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="fl">4326</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">agg.dates</span>, FUN <span class="op">=</span> <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="va">figure</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">datatrace</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">TS</span>, colour <span class="op">=</span> <span class="st">"#000000"</span>, linetype <span class="op">=</span> <span class="st">"solid"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">figure</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa1%2Fa1_pr_plus_trace_data.png" alt="Figure 4. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 4. Mean decadal temperature as in the
+dsclim dataset for two points and mean decadal temperature as in the
+original TraCE21ka dataset for the pixel including both points.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="extracting-chelsa-point-data">Extracting CHELSA point data<a class="anchor" aria-label="anchor" href="#extracting-chelsa-point-data"></a>
 </h2>
 <p>During the development of this dataset, we conducted an external data
 validation exercise with the aim of uncovering any potential procedure
@@ -131,20 +192,32 @@ bias. To this end, we extracted point data from CHELSA TraCE21k,
 focusing on both maximum and minimum temperature. Following the
 collection of this data and the completion of necessary unit conversion,
 we proceeded to calculate the average temperature.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+
+
+
+<ul class="nav nav-pills" id="extracting-chelsa-point-data" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#NA" id="NA-tab" type="button" role="tab" aria-controls="NA" aria-selected="true" class="active nav-link">
+<code class="sourceCode R"><span><span class="va">pixel1</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="st">"../../10-Paper/02-Figure_timeseries_ds-chelsa/pixel1.gpkg"</span><span class="op">)</span></span>
+<span><span class="va">pixel2</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="st">"../../10-Paper/02-Figure_timeseries_ds-chelsa/pixel2.gpkg"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="op">-</span><span class="fl">200</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span> <span class="op">-</span><span class="fl">20100</span>, to<span class="op">=</span><span class="fl">1900</span>,  by<span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">chelsa_dates</span> <span class="op">&lt;-</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"0000-"</span>, <span class="va">df2</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"-01"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">years</a></span><span class="op">(</span><span class="va">df2</span><span class="op">$</span><span class="va">Var2</span><span class="op">)</span></span></code></button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#ts-2" id="ts-2-tab" type="button" role="tab" aria-controls="ts-2" aria-selected="false" class="nav-link">TS</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#pr-2" id="pr-2-tab" type="button" role="tab" aria-controls="pr-2" aria-selected="false" class="nav-link">PR</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="NA" role="tabpanel" aria-labelledby="NA-tab"></div>
+<div class="tab-pane" id="ts-2" role="tabpanel" aria-labelledby="ts-2-tab">
+
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">chelsa_tmax</span> <span class="op">&lt;-</span> <span class="st">"../../Data/chelsa_trace/tasmax/CHELSA_TraCE21k_tasmax_"</span></span>
 <span><span class="va">chelsa_tmin</span> <span class="op">&lt;-</span> <span class="st">"../../Data/chelsa_trace/tasmin/CHELSA_TraCE21k_tasmin_"</span></span>
 <span></span>
-<span><span class="va">pixel1</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="st">"../../10-Paper/02-Figure_timeseries_ds-chelsa/pixel1.gpkg"</span><span class="op">)</span></span>
-<span><span class="va">pixel2</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="st">"../../10-Paper/02-Figure_timeseries_ds-chelsa/pixel2.gpkg"</span><span class="op">)</span></span>
+<span><span class="va">chelsa_tmax_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../../Data/chelsa_trace/tasmax/CHELSA_TraCE21k_tasmax_"</span>, <span class="va">df1</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"_"</span>, <span class="va">df1</span><span class="op">$</span><span class="va">Var2</span>, <span class="st">"_V1.0.tif"</span><span class="op">)</span></span>
+<span><span class="va">chelsa_tmin_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../../Data/chelsa_trace/tasmin/CHELSA_TraCE21k_tasmin_"</span>, <span class="va">df1</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"_"</span>, <span class="va">df1</span><span class="op">$</span><span class="va">Var2</span>, <span class="st">"_V1.0.tif"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="op">-</span><span class="fl">200</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span>
-<span><span class="va">chelsa_tmax_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../../Data/chelsa_trace/tasmax/CHELSA_TraCE21k_tasmax_"</span>, <span class="va">df</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"_"</span>, <span class="va">df</span><span class="op">$</span><span class="va">Var2</span>, <span class="st">"_V1.0.tif"</span><span class="op">)</span></span>
-<span><span class="va">chelsa_tmin_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../../Data/chelsa_trace/tasmin/CHELSA_TraCE21k_tasmin_"</span>, <span class="va">df</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"_"</span>, <span class="va">df</span><span class="op">$</span><span class="va">Var2</span>, <span class="st">"_V1.0.tif"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span> <span class="op">-</span><span class="fl">20100</span>, to<span class="op">=</span><span class="fl">1900</span>,  by<span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">chelsa_dates</span> <span class="op">&lt;-</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"0000-"</span>, <span class="va">df</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"-01"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">years</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">Var2</span><span class="op">)</span></span>
-<span>      </span>
 <span><span class="va">chelsa_tmax_pixel1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">chelsa_tmax_files</span>, along <span class="op">=</span> <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_set_dimensions</a></span><span class="op">(</span>which <span class="op">=</span> <span class="st">"time"</span>, values <span class="op">=</span> <span class="va">chelsa_dates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">pixel1</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
 <span><span class="va">chelsa_tmax_pixel1</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">chelsa_tmax_pixel1</span> <span class="op">*</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">273</span><span class="op">)</span> </span>
 <span>  </span>
@@ -168,19 +241,57 @@ we proceeded to calculate the average temperature.</p>
 <span></span>
 <span><span class="va">figure</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa1%2Fa1_fig1_plus_chelsatrace_data.png" alt="Figure 3. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 3. Mean decadal temperature as in the
+<img src="figures%2Fa1%2Fa1_fig1_plus_chelsatrace_data.png" alt="Figure 5. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 5. Mean decadal temperature as in the
 dsclim dataset and chelsa-trace for two points, and mean decadal
 temperature as in the original TraCE21ka dataset for the pixel including
 both points.</div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="plotting-the-data">Plotting the data<a class="anchor" aria-label="anchor" href="#plotting-the-data"></a>
+<div class="tab-pane" id="pr-2" role="tabpanel" aria-labelledby="pr-2-tab">
+
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chelsa_pr_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../../Public/Data/Chelsa-Trace/envicloud/chelsa/chelsa_V1/chelsa_trace/pr/CHELSA_TraCE21k_pr_"</span>,</span>
+<span>                          <span class="va">df1</span><span class="op">$</span><span class="va">Var1</span>, <span class="st">"_"</span>, <span class="va">df1</span><span class="op">$</span><span class="va">Var2</span>, <span class="st">"_V1.0.tif"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chelsa_pr_pixel1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">chelsa_pr_files</span>, along <span class="op">=</span> <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_set_dimensions</a></span><span class="op">(</span>which <span class="op">=</span> <span class="st">"time"</span>, values <span class="op">=</span> <span class="va">chelsa_dates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">pixel1</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chelsa1</span> <span class="op">&lt;-</span> <span class="va">chelsa_pr_pixel1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/calendar_dates.html">calendar_dates</a></span><span class="op">(</span><span class="op">-</span><span class="fl">22050</span>, <span class="fl">40</span>, by <span class="op">=</span> <span class="st">"100 years"</span><span class="op">)</span>, FUN<span class="op">=</span><span class="va">mean</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chelsa_pr_pixel2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">chelsa_pr_files</span>, along <span class="op">=</span> <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_set_dimensions</a></span><span class="op">(</span>which <span class="op">=</span> <span class="st">"time"</span>, values <span class="op">=</span> <span class="va">chelsa_dates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">pixel2</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chelsa2</span> <span class="op">&lt;-</span> <span class="va">chelsa_pr_pixel2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="fu">dsclimtools</span><span class="fu">::</span><span class="fu"><a href="../reference/calendar_dates.html">calendar_dates</a></span><span class="op">(</span><span class="op">-</span><span class="fl">22050</span>, <span class="fl">40</span>, by <span class="op">=</span> <span class="st">"100 years"</span><span class="op">)</span>, FUN<span class="op">=</span><span class="va">mean</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="va">figure</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_step</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">chelsa1</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">attr</span>, colour <span class="op">=</span> <span class="st">"POINT (0 41.5)"</span>, linetype <span class="op">=</span> <span class="st">"11"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_step</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">chelsa2</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">attr</span>, colour <span class="op">=</span> <span class="st">"POINT (0 42.8)"</span>, linetype <span class="op">=</span> <span class="st">"11"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">figure</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa1%2Fa1_pr_plus_chelsatrace_data.png" alt="Figure 6. Precipitation as in the dsclim dataset and chelsa-trace for two points, and as in the original TraCE21ka dataset for the pixel including both points."><div class="figcaption">Figure 6. Precipitation as in the dsclim dataset
+and chelsa-trace for two points, and as in the original TraCE21ka
+dataset for the pixel including both points.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills" id="plotting-the-data">Plotting the data<a class="anchor" aria-label="anchor" href="#plotting-the-data"></a>
 </h2>
 <p>The objective here is to plot all the data together in order to gain
 insight into the similarities and differences between the various
 sources.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+
+
+<ul class="nav nav-pills" id="plotting-the-data" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#ts-3" id="ts-3-tab" type="button" role="tab" aria-controls="ts-3" aria-selected="true" class="active nav-link">TS</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#pr-3" id="pr-3-tab" type="button" role="tab" aria-controls="pr-3" aria-selected="false" class="nav-link">PR</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="ts-3" role="tabpanel" aria-labelledby="ts-3-tab">
+
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">figure</span> <span class="op">+</span> </span>
 <span>    <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">theme</span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -197,8 +308,33 @@ sources.</p>
 <span>                       guide <span class="op">=</span> <span class="st">"legend"</span>,</span>
 <span>                       name <span class="op">=</span> <span class="st">"Location"</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa1%2Fa1_fig1_arranged.png" alt="Figure 4. Figure 3 arranged to codify colors and linetypes."><div class="figcaption">Figure 4. Figure 3 arranged to codify colors and
+<img src="figures%2Fa1%2Fa1_fig1_arranged.png" alt="Figure 7. Figure 5 arranged to codify colors and linetypes."><div class="figcaption">Figure 7. Figure 5 arranged to codify colors and
 linetypes.</div>
+</div>
+</div>
+<div class="tab-pane" id="pr-3" role="tabpanel" aria-labelledby="pr-3-tab">
+
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">figure</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Precipitation (mm)"</span>, x <span class="op">=</span> <span class="st">"Time (calendar years)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_cartesian</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="st">"1950-01-01"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">years</a></span><span class="op">(</span><span class="op">-</span><span class="fl">21150</span><span class="op">)</span>, <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">years</a></span><span class="op">(</span><span class="fl">240</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="fu">scale_linetype_identity</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Data source"</span>,</span>
+<span>                          breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"f1"</span>, <span class="st">"11"</span><span class="op">)</span>,</span>
+<span>                          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TraCE21ka"</span>, <span class="st">"dsclim"</span>, <span class="st">"Chelsa-TraCE"</span><span class="op">)</span>,</span>
+<span>                          guide <span class="op">=</span> <span class="st">"legend"</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="fu">scale_color_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span><span class="op">)</span>,</span>
+<span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Trace pixel"</span>, <span class="st">"Point A"</span>, <span class="st">"Point B"</span><span class="op">)</span>,</span>
+<span>                     guide <span class="op">=</span> <span class="st">"legend"</span>,</span>
+<span>                     name <span class="op">=</span> <span class="st">"Location"</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa1%2Fa1_pr_arranged.png" alt="Figure 8. Figure 6 arranged to codify colors and linetypes."><div class="figcaption">Figure 8. Figure 6 arranged to codify colors and
+linetypes.</div>
+</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
