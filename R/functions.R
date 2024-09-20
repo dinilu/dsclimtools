@@ -163,10 +163,11 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 #'
 #' @examples # TBW
 read_trace <- function(folder, var, sf = NULL){
-  # folder <- "../Data/TraCE21ka"
-  # var <- "TS"
-  # sf <- points[1,]
+  # folder <- "../../Public/Data/TraCE21ka/"
+  # var <- "PRECC"
+  # sf <- st_set_crs(points[1,], 4326)
   files <- list.files(paste0(folder, "/", var), full.names = TRUE, pattern=".nc")
+  paste(files)
   data <- lapply(files, FUN = stars::read_ncdf, proxy = FALSE)
   # data <- lapply(files, FUN = stars::read_stars) # Doesn't work because uneven grid.
   data <- do.call(c, data)
@@ -180,13 +181,14 @@ read_trace <- function(folder, var, sf = NULL){
     data <- flux2mm(data)
   }
 
-  if(!is.null(sf)){
+if(!is.null(sf)){
     lat <- st_coordinates(sf)[,2]
-    lats <- stars::st_dimensions(data)$lat$value
+    lats <- stars::st_dimensions(data)$lat$values
     i <- findInterval(lat, lats)
 
     data <- dplyr::filter(data, lat > floor(lats[i]), lat < ceiling(lats[i+1]))
-    data <- sf::st_crop(data, sf)
+    # data <- sf::st_crop(data, sf)
+    data <- stars::st_extract(data, at = sf)
   }
   data
 }
