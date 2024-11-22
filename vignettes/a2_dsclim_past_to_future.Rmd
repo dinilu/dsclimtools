@@ -2,7 +2,7 @@
 title: "2. Combine dsclim data from past to future"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{2. Combine dsclim data from past to future}
+  %\VignetteIndexEntry{2. Combine dsclim data from past to future}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
