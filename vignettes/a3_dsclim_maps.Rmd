@@ -177,7 +177,7 @@ write_stars(out_mad,
 
 ![Figure 5. Median Absolute Deviation values of temperatures during the whole 22.000 years of climate oscillations (warmings and coolings) during the last deglaciation.](figures/a3/a3_fig_p3_mad.png)
 
-### Slope
+#### Slope
 
 Finally, slope shows the smallest values among the three periods, which is expected taking into account the length of the study period (22.000 years) and the relative stability at the beginning (end of glaciation) and end of the period (Holocene). The positive values indicate that the whole study area has undergone warming, with coastal areas and the Sahara experiencing smaller changes.
 

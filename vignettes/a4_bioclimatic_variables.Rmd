@@ -52,14 +52,14 @@ model.projection <- function(p, predictors_list, land, model) {
 
 In this section, we outline the periods of interest.
 
-### PRESENT
+### Present
 
 ```{r present_period}
 present_start <- 11
 present_end <- 40
 ```
 
-### PAST
+### Past
 
 ```{r past_period}
 past_start <- -14500
@@ -70,7 +70,7 @@ past_end <- -14400
 
 In this step, we load the climatic data for the specified period. The data is transformed into a list using the stars_to_stack function, with each element representing a raster stack of the twelve months in each year.
 
-### PRESENT
+### Present
 
 ```{r}
 present_tmax <- dsclimtools::read_dsclim( "../data/dsclim", 
@@ -109,7 +109,7 @@ present_prec <- lapply(seq(1, 360, by = 12),
 
 ![Figure 1. Maximun Temperature](figures/a4/present_tmax.png){width="600"}
 
-### PAST
+### Past
 
 ```{r}
 tmax <- dsclimtools::read_dsclim( "../data/dsclim", 
@@ -153,7 +153,7 @@ prec <- lapply(seq(1, 1212, by = 12),
 
 We have now calculated the 19 bioclimatic variables for the specified periods of interest in accordance with the agreed specifications. The data is stored in the form of a list, with each element representing a raster stack of the 19 bioclimatic variables. Please note that for the present period, the mean has been calculated in order to create a unique grid for each variable, which will be used later in the model calibration process. In both cases, we selected the variables that we intend to use in our model. As this example has been developed based on the guidance set out in <https://rspatial.org/raster/sdm/raster_SDM.pdf>, we have maintained consistency in the bioclimatic variables used. It is important to note that this is solely for illustrative purposes. In actual modelling, it would be advisable to select variables based on their ecological impact on the study species and their correlation.
 
-### PRESENT
+### Present
 
 ```{r}
 present_bio_list <- mapply(dismo::biovars, 
@@ -166,7 +166,7 @@ Present_bioclim <- stack(reduce(present_bio_list, `+`) / length(present_bio_list
                    subset(c(1,5,6,7,8,12,16,17))
 ```
 
-### PAST
+### Past
 
 ```{r}
 bio_list <- mapply(dismo::biovars, 
@@ -268,7 +268,7 @@ pred_data$year <- pred_data$year %>%
 
 Furthermore, we have provided a graphical illustration of the fluctuations in the potential distribution of the species over the specified period, as well as its current predicted distribution. Additionally, we have calculated the pixel mean value and identified those which have a mean value greater than 0.7, which we believe will be of interest to those engaged in biogeographical studies such as the identification of refugia.
 
-### CURRENT PREDICTED DISTRIBUTION
+### Current predicted distribution
 
 ```{r}
 
@@ -285,7 +285,7 @@ present_prediction %>% ggplot() +
 
 ![Figure 3. Current Predicted Distribution](figures/a4/present_map.png){width="640"}
 
-### GRAFICAL ANIMATION
+### Graphical animation
 
 ```{r}
 gg <- ggplot(
@@ -314,7 +314,7 @@ animate(gganim,
 
 ![Figure 4. SDM Animation](figures/a4/glm_timeseries.gif)
 
-### OVER THRESHOLD MAP
+### Thresholded map
 
 ```{r}
 mean_data <- pred_data %>% 
