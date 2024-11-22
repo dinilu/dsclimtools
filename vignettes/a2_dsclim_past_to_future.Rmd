@@ -5,25 +5,25 @@ vignette: >
 %\VignetteIndexEntry{2. Combine dsclim data from past to future}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  ---
+---
   
-  ```{r, include = FALSE}
-  knitr::opts_chunk$set(
-  collapse = TRUE,
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  eval = FALSE,
-  comment = "#>"
-  )
-  ```
-  
-  ## Loading past data into R environment
-  
-  It is crucial to ensure a seamless transition between data from different sources when utilising climate data for past and future periods. This is important even when the overlapping period data source is the same. We have illustrated this concept through a graphical representation in this vignette. To exemplify, we will load the downscaled past climate data into R and extract a 30-year period (i.e., 1960-1990) in two locations.
-  
-  ```{r load_past_data}
-  library(dsclimtools)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+echo = TRUE,
+message = FALSE,
+warning = FALSE,
+eval = FALSE,
+comment = "#>"
+)
+```
+
+## Loading past data into R environment
+
+It is crucial to ensure a seamless transition between data from different sources when utilising climate data for past and future periods. This is important even when the overlapping period data source is the same. We have illustrated this concept through a graphical representation in this vignette. To exemplify, we will load the downscaled past climate data into R and extract a 30-year period (i.e., 1960-1990) in two locations.
+
+```{r load_past_data}
+library(dsclimtools)
 library(stars)
 library(units)
 library(ggplot2)
@@ -32,46 +32,47 @@ point1 <- c(0, 41.5) %>% matrix(1, 2) %>% sf::st_point(dim = "XYZ")
 point2 <- c(0, 42.8) %>% matrix(1, 2) %>% sf::st_point(dim = "XYZ")
 
 past1 <- dsclimtools::read_dsclim("../data/dsclim", 
-var = "tas", 
-y_start = 10, 
-y_end = 40, 
-calendar_dates = TRUE, 
-sf = point1, 
-proxy = FALSE)
+                                  var = "tas", 
+                                  y_start = 10, 
+                                  y_end = 40, 
+                                  calendar_dates = TRUE, 
+                                  sf = point1, 
+                                  proxy = FALSE)
+
 past2 <- dsclimtools::read_dsclim("../data/dsclim", 
-var = "tas", 
-y_start = 10, 
-y_end = 40, 
-calendar_dates = TRUE, 
-sf = point2, 
-proxy = FALSE)
+                                  var = "tas", 
+                                  y_start = 10, 
+                                  y_end = 40, 
+                                  calendar_dates = TRUE, 
+                                  sf = point2, 
+                                  proxy = FALSE)
 
-figure <- ggplot2::ggplot() +
-ggplot2::geom_line(data = drop_units(as.data.frame(past1)), 
-aes(x = time, 
-y = tas), 
-color = "#56B4E9", 
-alpha = 0.3) + 
-ggplot2::geom_line(data = drop_units(as.data.frame(aggregate(past1, 
-by = calendar_dates(10, 41, "1 year"), 
-FUN = mean, 
-na.rm = TRUE))), 
-aes(x = time, 
-y = tas), 
-color = "#56B4E9") + 
-
-ggplot2::geom_line(data = drop_units(as.data.frame(past2)), 
-aes(x = time, 
-y = tas), 
-color = "#E69F00", 
-alpha = 0.3) + 
-ggplot2::geom_line(data = drop_units(as.data.frame(aggregate(past2, 
-by = calendar_dates(10, 41, "1 year"), 
-FUN = mean, 
-na.rm = TRUE))), 
-aes(x = time, 
-y = tas), 
-color = "#E69F00")
+figure <- ggplot() +
+  geom_line(data = drop_units(as.data.frame(past1)), 
+                     aes(x = time, 
+                         y = tas), 
+                     color = "#56B4E9", 
+                     alpha = 0.3) + 
+  geom_line(data = drop_units(as.data.frame(aggregate(past1, 
+                                                               by = calendar_dates(10, 41, "1 year"), 
+                                                               FUN = mean, 
+                                                               na.rm = TRUE))), 
+                     aes(x = time, 
+                         y = tas), 
+                     color = "#56B4E9") + 
+  
+  geom_line(data = drop_units(as.data.frame(past2)), 
+                     aes(x = time, 
+                         y = tas), 
+                     color = "#E69F00", 
+                     alpha = 0.3) + 
+  geom_line(data = drop_units(as.data.frame(aggregate(past2, 
+                                                               by = calendar_dates(10, 41, "1 year"), 
+                                                               FUN = mean, 
+                                                               na.rm = TRUE))), 
+                     aes(x = time, 
+                         y = tas), 
+                     color = "#E69F00")
 ```
 
 ![Figure 1. Temperatures for two points of the study area during the calibration period (1960-1990)](figures/a2/a2_fig_past.png)
