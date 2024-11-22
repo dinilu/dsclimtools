@@ -97,86 +97,204 @@ stability is a significant factor. For example, we select the specific
 time periods of interest and load the corresponding data, calculating
 two parameters for each period. The Median Absolute Deviation and the
 slope are two metrics that provide valuable insights into climate
-stability. The Median Absolute Deviation offers a proxy for
+stability. The Median Absolute Deviation (MAD) offers a proxy for
 understanding the long-term variations in climate, while the slope
 serves as an indicator of the predominant direction of these changes.
 Once the computational work is complete, we save our example results and
 plot them for analysis.</p>
 <div class="section level3">
-<h3 id="period-median-absolute-deviation">-14650, -14400 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation"></a>
+<h3 id="warming-in-the-bolling-allerod-14-650-to-14-400-years-bp">Warming in the Bolling-Allerod (14.650 to 14.400 years BP)<a class="anchor" aria-label="anchor" href="#warming-in-the-bolling-allerod-14-650-to-14-400-years-bp"></a>
 </h3>
+<p>Here, we analyse spatio-temporal patterns for a period of 500 years
+during the Bølling-Allerød, a period of quick warming after the oldest
+Dryas.</p>
+<div class="section level4">
+<h4 id="median-absolute-deviationø">Median Absolute Deviationø<a class="anchor" aria-label="anchor" href="#median-absolute-deviation%C3%B8"></a>
+</h4>
+<p>In this section, we calculate the MAD of temperatures for the period
+14.650 years BP and 14.400 years BP. MAD values range from ~3 to &gt;12,
+indicating a contrasting levels of variation in the study region. As
+expected, coastal areas have been more stables while the more variable
+areas include the Sahara.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">14650</span>, <span class="op">-</span><span class="fl">14400</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, </span>
+<span>                      <span class="va">var</span>, </span>
+<span>                      <span class="op">-</span><span class="fl">14650</span>, </span>
+<span>                      <span class="op">-</span><span class="fl">14400</span>, </span>
+<span>                      proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># reduce_data(-14650, -14400, folder=folder, var=var, FUN="mad", size=50)</span></span>
-<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN<span class="op">=</span><span class="va">mad</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, <span class="st">"mad_-14650_-14400.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"mad_-14650_-14400.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                           MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                           FUN<span class="op">=</span><span class="va">mad</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, <span class="st">"mad_-14650_-14400.tif"</span>, </span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"mad_-14650_-14400.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p1_mad.png" alt="Figure 1."><div class="figcaption">Figure 1.</div>
+<img src="figures%2Fa3%2Fa3_fig_p1_mad.png" alt="Figure 1. Median Absolute Deviation values of temperatures during 500 years of warming during the Bolling-Allerod."><div class="figcaption">Figure 1. Median Absolute Deviation values of
+temperatures during 500 years of warming during the
+Bolling-Allerod.</div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="period-slope">-14650, -14400 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope"></a>
-</h3>
+<div class="section level4">
+<h4 id="slope">Slope<a class="anchor" aria-label="anchor" href="#slope"></a>
+</h4>
+<p>When analyzing the slope during the same period in the study area,
+all values are positive, indicating that the whole study area underwent
+warming. Again slopes values ranged from 0.002 to 0.014, indicating
+contrasting patterns of warning among areas. More specifically,
+according to the dsclim dataset, mountaineous regions (like the Pyrenees
+or the Atlas) has undergone more warning than lower and flatter
+areas.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-14650_-14400.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-14650_-14400.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                             MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                             FUN <span class="op">=</span> <span class="va">slope</span>, </span>
+<span>                             t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, </span>
+<span>            <span class="st">"slope_-14650_-14400.tif"</span>,</span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"slope_-14650_-14400.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p1_slope.png" alt="Figure 2."><div class="figcaption">Figure 2.</div>
+<img src="figures%2Fa3%2Fa3_fig_p1_slope.png" alt="Figure 2. Rate of change (slope) of temperatures during 500 years of warming during the Bolling-Allerod."><div class="figcaption">Figure 2. Rate of change (slope) of temperatures
+during 500 years of warming during the Bolling-Allerod.</div>
+</div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="period-median-absolute-deviation-1">-18149, -17150 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation-1"></a>
+<h3 id="cooling-at-the-end-of-the-pleistocene-18-149-to--17-150-years-bp">Cooling at the end of the Pleistocene (18.149 to -17.150 years
+BP)<a class="anchor" aria-label="anchor" href="#cooling-at-the-end-of-the-pleistocene-18-149-to--17-150-years-bp"></a>
 </h3>
+<p>Here, we analyze 1.000 years of progressive cooling at the end of the
+Pleistocene.</p>
+<div class="section level4">
+<h4 id="median-absolute-deviation">Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#median-absolute-deviation"></a>
+</h4>
+<p>MAD values range from ~3 to ~11, indicating a slightly smaller range
+of variation than during the warming in the Bolling-Allerod. The spatial
+pattern for such variation is quite similar between the two periods,
+with coastal areas being more stable, and the Sahara experiencing less
+stability.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">18149</span>, <span class="op">-</span><span class="fl">17150</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>,</span>
+<span>                      <span class="va">var</span>, </span>
+<span>                      <span class="op">-</span><span class="fl">18149</span>, </span>
+<span>                      <span class="op">-</span><span class="fl">17150</span>, </span>
+<span>                      proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reduce_data(-18150, -17150, folder=folder, var=var, FUN="mad", size=50)</span></span>
-<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">mad</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, <span class="st">"mad_-18149_-17150.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"mad_-18149_-17150.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p2_mad.png" alt="Figure 3."><div class="figcaption">Figure 3.</div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="period-slope-1">-18149, -17150 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope-1"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-18149_-17150.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-18149_-17150.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p2_slope.png" alt="Figure 4."><div class="figcaption">Figure 4.</div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="period-median-absolute-deviation-2">-22000, 40 period, Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#period-median-absolute-deviation-2"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, <span class="va">var</span>, <span class="op">-</span><span class="fl">22000</span>, <span class="fl">40</span>, proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
+<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                           MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                           FUN <span class="op">=</span> <span class="va">mad</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">mad</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, <span class="st">"mad_-22000_40.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"mad_-22000_40.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, </span>
+<span>            <span class="st">"mad_-18149_-17150.tif"</span>, </span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"mad_-18149_-17150.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p3_mad.png" alt="Figure 5."><div class="figcaption">Figure 5.</div>
+<img src="figures%2Fa3%2Fa3_fig_p2_mad.png" alt="Figure 3. Median Absolute Deviation values of temperatures during 1.000 years of cooling at the end of the Pleistocene."><div class="figcaption">Figure 3. Median Absolute Deviation values of
+temperatures during 1.000 years of cooling at the end of the
+Pleistocene.</div>
+</div>
+</div>
+<div class="section level4">
+<h4 id="slope-1">Slope<a class="anchor" aria-label="anchor" href="#slope-1"></a>
+</h4>
+<p>Slope values varied from -0.004 and &gt;0, indicating that while most
+of the area underwent cooling, a few areas in the Sahara didn’t have a
+temporal trend in change or even became a little warmer. The smaller
+range of values indicates also that the cooling was in general slower
+than the warming during the Bolling-Allerod.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                             MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                             FUN <span class="op">=</span> <span class="va">slope</span>, </span>
+<span>                             t <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, </span>
+<span>            <span class="st">"slope_-18149_-17150.tif"</span>, </span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"slope_-18149_-17150.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">terra</span><span class="op">:</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa3%2Fa3_fig_p2_slope.png" alt="Figure 4. Rate of change (slope) in temperatures during 1.000 years of cooling at the end of the Pleistocene."><div class="figcaption">Figure 4. Rate of change (slope) in temperatures
+during 1.000 years of cooling at the end of the Pleistocene.</div>
+</div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="period-slope-2">-22000, 40 period, Slope<a class="anchor" aria-label="anchor" href="#period-slope-2"></a>
+<h3 id="last-deglaciation-between-22-ky-bp-to-present">Last deglaciation (between 22 ky BP to present)<a class="anchor" aria-label="anchor" href="#last-deglaciation-between-22-ky-bp-to-present"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">slope</span>, t <span class="op">=</span> <span class="va">t</span>, PROGRESS <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, <span class="st">"slope_-22000_40.tif"</span>, chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">raster</span><span class="fu">::</span><span class="fu">raster</span><span class="op">(</span><span class="st">"slope_-22000_40.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>In this last example, we analyze the same spatio-temporal variables
+for the whole study period. Identifying areas subjected to more
+stability and with more clear temporal trends of warming.</p>
+<div class="section level4">
+<h4 id="median-absolute-deviation-1">Median Absolute Deviation<a class="anchor" aria-label="anchor" href="#median-absolute-deviation-1"></a>
+</h4>
+<p>MAD values range between ~3 and &gt; 12. Those values are in a
+similar range than what we found for the warming during the
+Bolling-Allerod, which is not surprising given the range and rate of
+change during this period. Again, the more stable areas have been the
+coastal areas and montainous areas (e.g. Pyrenees or Atlas).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tas_ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="va">folder</span>, </span>
+<span>                      <span class="va">var</span>, </span>
+<span>                      <span class="op">-</span><span class="fl">22000</span>, </span>
+<span>                      <span class="fl">40</span>, </span>
+<span>                      proxy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_dimensions.html" class="external-link">st_get_dimension_values</a></span><span class="op">(</span><span class="va">tas_ds</span>, <span class="st">"time"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">365</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">out_mad</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                           MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                           FUN <span class="op">=</span> <span class="va">mad</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_mad</span>, </span>
+<span>            <span class="st">"mad_-22000_40.tif"</span>, </span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"mad_-22000_40.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa3%2Fa3_fig_p3_slope.png" alt="Figure 6."><div class="figcaption">Figure 6.</div>
+<img src="figures%2Fa3%2Fa3_fig_p3_mad.png" alt="Figure 5. Median Absolute Deviation values of temperatures during the whole 22.000 years of climate oscillations (warmings and coolings) during the last deglaciation."><div class="figcaption">Figure 5. Median Absolute Deviation values of
+temperatures during the whole 22.000 years of climate oscillations
+(warmings and coolings) during the last deglaciation.</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="slope-2">Slope<a class="anchor" aria-label="anchor" href="#slope-2"></a>
+</h3>
+<p>Finally, slope shows the smallest values among the three periods,
+which is expected taking into account the length of the study period
+(22.000 years) and the relative stability at the beginning (end of
+glaciation) and end of the period (Holocene). The positive values
+indicate that the whole study area has undergone warming, with coastal
+areas and the Sahara experiencing smaller changes.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_slope</span> <span class="op">&lt;-</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_apply.html" class="external-link">st_apply</a></span><span class="op">(</span><span class="va">tas_ds</span>, </span>
+<span>                             MARGIN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                             FUN <span class="op">=</span> <span class="va">slope</span>, </span>
+<span>                             t <span class="op">=</span> <span class="va">t</span>, </span>
+<span>                             PROGRESS <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">out_slope</span>, </span>
+<span>            <span class="st">"slope_-22000_40.tif"</span>, </span>
+<span>            chunk_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="st">"slope_-22000_40.tif"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="figures%2Fa3%2Fa3_fig_p3_slope.png" alt="Figure 6. Rate of change (slope) in temperatures during the whole 22.000 years of climate oscillations (warmings and coolings) during the last deglaciation."><div class="figcaption">Figure 6. Rate of change (slope) in temperatures
+during the whole 22.000 years of climate oscillations (warmings and
+coolings) during the last deglaciation.</div>
 </div>
 </div>
 </div>
