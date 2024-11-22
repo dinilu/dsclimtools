@@ -6,7 +6,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of dsclimtools is to ...
+The goal of dsclimtools is to interact with the dsclim dataset. To do so, this package provide functions that allow to read the data into R objects of the `stars` class (from the `stars` package). It also provide a few functions to modify and manipulate these objects (e.g. modify dates, change units, etcetera).
 
 ## Installation
 
@@ -17,12 +17,5 @@ library(devtools)
 install_github("dinilu/dsclimtools")
 ```
 
-## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(dsclimtools)
-## basic example code
-```
 

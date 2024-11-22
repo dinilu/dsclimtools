@@ -55,7 +55,7 @@ figure <- ggplot() +
 figure
 ```
 
-![Figure 1. Mean decadal temperature as in the dsclim dataset for two points](figures/a1/a1_tas_dsclim.png)
+![Figure 1a. Mean decadal temperature as in the dsclim dataset for two points](figures/a1/a1_tas_dsclim.png)
 
 ### PR
 
@@ -97,7 +97,7 @@ figure <- ggplot() +
 figure
 ```
 
-![Figure 2. Decadal precipitation as in the dsclim dataset for two points](figures/a1/a1_pr_dsclim.png)
+![Figure 1b. Decadal precipitation as in the dsclim dataset for two points](figures/a1/a1_pr_dsclim.png)
 
 ## Importing TraCE21ka data {.tabset .tabset-pills}
 
@@ -122,7 +122,7 @@ figure <- figure + geom_line(data = as.data.frame(datatrace),
 figure
 ```
 
-![Figure 3. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_tas_plus_trace_data.png)
+![Figure 2a. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_tas_plus_trace_data.png)
 
 ### PR
 
@@ -143,7 +143,7 @@ figure <- figure + geom_line(data = as.data.frame(datatrace),
 figure
 ```
 
-![Figure 4. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_pr_plus_trace_data.png)
+![Figure 2b. Mean decadal temperature as in the dsclim dataset for two points and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_pr_plus_trace_data.png)
 
 ## Extracting CHELSA point data {.tabset .tabset-pills}
 
@@ -208,7 +208,7 @@ figure <- figure +
 figure
 ```
 
-![Figure 5. Mean decadal temperature as in the dsclim dataset and chelsa-trace for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_tas_plus_chelsatrace_data.png)
+![Figure 3a. Mean decadal temperature as in the dsclim dataset and Chelsa-TraCE for two points, and mean decadal temperature as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_tas_plus_chelsatrace_data.png)
 
 ### PR
 
@@ -260,7 +260,7 @@ figure
 
 ```
 
-![Figure 6. Precipitation as in the dsclim dataset and chelsa-trace for two points, and as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_pr_plus_chelsatrace_data.png)
+![Figure 3b. Precipitation as in the dsclim dataset and Chelsa-TraCE for two points, and as in the original TraCE21ka dataset for the pixel including both points.](figures/a1/a1_pr_plus_chelsatrace_data.png)
 
 ## Plotting the data {.tabset .tabset-pills}
 
@@ -288,7 +288,7 @@ figure +
                        name = "Location")
 ```
 
-![Figure 7. Figure 5 arranged to codify colors and linetypes.](figures/a1/a1_tas_plot_complete.jpg)
+![Figure 4a. Figure 3a arranged to codify colors and linetypes.](figures/a1/a1_tas_plot_complete.jpg)
 
 ### PR
 
@@ -312,4 +312,4 @@ figure +
                      name = "Location")
 ```
 
-![Figure 8. Figure 6 arranged to codify colors and linetypes.](figures/a1/a1_pr_plot_complete.jpg)
+![Figure 4b. Figure 3b arranged to codify colors and linetypes.](figures/a1/a1_pr_plot_complete.jpg)
