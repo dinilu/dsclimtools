@@ -39,8 +39,11 @@ stars_to_stack <- function(i, data){
 }
 
 model.projection <- function(p, predictors_list, land, model) {
-  predictors <- predictors_list[[p]] %>% raster::mask(land)
-  prediction <- predict(predictors, model, type = "response")
+  predictors <- predictors_list[[p]] %>% 
+                raster::mask(land)
+  prediction <- predict(predictors, 
+                        model, 
+                        type = "response")
   prediction
 }
 ```
@@ -59,8 +62,8 @@ present_end <- 40
 ### PAST
 
 ```{r past_period}
-start <- -14500
-end <- -14400
+past_start <- -14500
+past_end <- -14400
 ```
 
 ## Extraction of source climatic data {.tabset .tabset-pills}
@@ -70,37 +73,81 @@ In this step, we load the climatic data for the specified period. The data is tr
 ### PRESENT
 
 ```{r}
-present_tmax <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "tasmax",
-                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE)
-present_tmin <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "tasmin",
-                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE) 
-present_prec <- dsclimtools::read_dsclim( "../../Public/Data/dsclim_v1/netcdf/", "pr",
-                             present_start, present_end, calendar_dates = TRUE, proxy = FALSE)
+present_tmax <- dsclimtools::read_dsclim( "../data/dsclim", 
+                                          "tasmax",
+                                          present_start, 
+                                          present_end, 
+                                          calendar_dates = TRUE, 
+                                          proxy = FALSE)
 
-present_tmax <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_tmax)
-present_tmin <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_tmin)
-present_prec <- lapply(seq(1, 360, by = 12), FUN = stars_to_stack, present_prec)
+present_tmin <- dsclimtools::read_dsclim( "../data/dsclim",
+                                          "tasmin",
+                                          present_start, 
+                                          present_end, 
+                                          calendar_dates = TRUE, 
+                                          proxy = FALSE) 
+
+present_prec <- dsclimtools::read_dsclim( "../data/dsclim", 
+                                          "pr",
+                                          present_start, 
+                                          present_end, 
+                                          calendar_dates = TRUE, 
+                                          proxy = FALSE)
+
+present_tmax <- lapply(seq(1, 360, by = 12), 
+                       FUN = stars_to_stack, 
+                       present_tmax)
+
+present_tmin <- lapply(seq(1, 360, by = 12), 
+                       FUN = stars_to_stack, 
+                       present_tmin)
+
+present_prec <- lapply(seq(1, 360, by = 12),
+                       FUN = stars_to_stack, 
+                       present_prec)
 ```
 
-![Figure 1. Maximun Temperature](images/present_tmax.png){width="600"}
+![Figure 1. Maximun Temperature](figures/a4/present_tmax.png){width="600"}
 
 ### PAST
 
 ```{r}
-tmax <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmax", start, end, calendar_dates = TRUE,
-                                  proxy = FALSE)
-tmin <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "tasmin", start, end, calendar_dates = TRUE,
-                                  proxy = FALSE) 
-prec <- dsclimtools::read_dsclim( "X:/Data/dsclim_v1/netcdf", "pr", start, end, calendar_dates = TRUE,
+tmax <- dsclimtools::read_dsclim( "../data/dsclim", 
+                                  "tasmax",
+                                  past_start, 
+                                  past_end, 
+                                  calendar_dates = TRUE,
                                   proxy = FALSE)
 
-tmax <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmax)
-tmin <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, tmin)
-prec <- lapply(seq(1, 1212, by = 12), FUN = stars_to_stack, prec)
+tmin <- dsclimtools::read_dsclim( "../data/dsclim", 
+                                  "tasmin",
+                                  past_start, 
+                                  past_end, 
+                                  calendar_dates = TRUE,
+                                  proxy = FALSE) 
+
+prec <- dsclimtools::read_dsclim( "../data/dsclim",
+                                  "pr",
+                                  past_start, 
+                                  past_end, 
+                                  calendar_dates = TRUE,
+                                  proxy = FALSE)
+
+tmax <- lapply(seq(1, 1212, by = 12), 
+               FUN = stars_to_stack, 
+               tmax)
+
+tmin <- lapply(seq(1, 1212, by = 12), 
+               FUN = stars_to_stack, 
+               tmin)
+
+prec <- lapply(seq(1, 1212, by = 12),
+               FUN = stars_to_stack, 
+               prec)
 
 ```
 
-![Figure 2. Maximun Temperature](images/tmax.png){width="600"}
+![Figure 2. Maximun Temperature](figures/a4/past_tmax.png){width="600"}
 
 ## Bioclimatic variables calculation {.tabset .tabset-pills}
 
@@ -109,21 +156,28 @@ We have now calculated the 19 bioclimatic variables for the specified periods of
 ### PRESENT
 
 ```{r}
-present_bio_list <- mapply(dismo::biovars, present_prec, present_tmin, present_tmax,
+present_bio_list <- mapply(dismo::biovars, 
+                           present_prec, 
+                           present_tmin, 
+                           present_tmax,
                            SIMPLIFY = FALSE)
 
-Present_bioclim <- stack(reduce(present_bio_list, `+`)/length(present_bio_list)) %>% 
-  subset(c(1,5,6,7,8,12,16,17))
+Present_bioclim <- stack(reduce(present_bio_list, `+`) / length(present_bio_list)) %>% 
+                   subset(c(1,5,6,7,8,12,16,17))
 ```
 
 ### PAST
 
 ```{r}
-bio_list <- mapply(dismo::biovars, prec, tmin, tmax, SIMPLIFY = FALSE) %>% 
-  lapply(function(x){
-    subset(x, c(1,5,6,7,8,12,16,17))
-  })
-
+bio_list <- mapply(dismo::biovars, 
+                   prec, 
+                   tmin, 
+                   tmax, 
+                   SIMPLIFY = FALSE) %>% 
+  
+            lapply(function(x){
+              subset(x, c(1,5,6,7,8,12,16,17))
+            })
 ```
 
 ## SDM data preparation
@@ -135,23 +189,37 @@ data("Beetles")
 
 presences <- Beetles %>%
   as.data.frame() %>%
-  filter(Species =="Bubas bison") %>% 
+  filter(Species == "Bubas bison") %>% 
   select(Longitude, Latitude)
 
 set.seed(1)
 
-topo14_mask <- system.file("extdata", "topo14_mask.tif", package = "dsclimtools") %>% raster()
+topo14_mask <- system.file("extdata", 
+                           "topo14_mask.tif", 
+                           package = "dsclimtools") %>% 
+               raster()
 
-absences <- randomPoints(topo14_mask, 400, presences)
+absences <- randomPoints(topo14_mask, 
+                         400, 
+                         presences)
 
-presvals <- raster::extract(Present_bioclim, presences, na.rm = TRUE)
+presvals <- raster::extract(Present_bioclim, 
+                            presences, 
+                            na.rm = TRUE)
+
 presvals <-  presvals[!rowSums(is.na(presvals)),]
 
-absvals <- raster::extract(Present_bioclim, absences, na.rm = TRUE)
+absvals <- raster::extract(Present_bioclim, 
+                           absences, 
+                           na.rm = TRUE)
+
 absvals <-  absvals[!rowSums(is.na(absvals)),]
 
-pb <- c(rep(1, nrow(presvals)), rep(0, nrow(absvals)))
-sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
+pb <- c(rep(1, nrow(presvals)), 
+        rep(0, nrow(absvals)))
+
+sdmdata <- data.frame(cbind(pb, 
+                            rbind(presvals, absvals)))
 ```
 
 ## GLM calibration and projection
@@ -159,25 +227,41 @@ sdmdata <- data.frame(cbind(pb, rbind(presvals, absvals)))
 We calibrated a Generalized Linear Model for our dataset in line with the specified requirements. Moreover, we projected the model over current conditions as well as the selected period conditions to illustrate the value of our dataset in biogeographical history studies.
 
 ```{r}
-model <-  glm(pb ~ bio1 + bio5 + bio6 + bio7 + bio8 + bio12 + bio16 + 
-                bio17, data=sdmdata, family = "binomial")
+model <-  glm(pb ~ bio1 + bio5 + bio6 + bio7 + bio8 + bio12 + bio16 + bio17, 
+              data=sdmdata, 
+              family = "binomial")
 
-present_prediction <- Present_bioclim %>% raster::mask(topo14_mask) %>% 
-  predict(model, type = "response") %>% 
-  as.data.frame(xy = TRUE) %>% na.omit()
+present_prediction <- Present_bioclim %>% 
+                      raster::mask(topo14_mask) %>% 
+                      predict(model, type = "response") %>% 
+                      as.data.frame(xy = TRUE) %>% na.omit()
 
-pred_data <- lapply(seq(1,101), FUN = model.projection, bio_list, topo14_mask, model)
+pred_data <- lapply(seq(1,101), 
+                    FUN = model.projection, 
+                    bio_list, 
+                    topo14_mask, 
+                    model)
+
 names(pred_data) <- paste0(-14500:-14400)
-pred_data <- lapply(pred_data, FUN = as.data.frame, xy = TRUE, na.rm = TRUE) %>% 
-  reshape2::melt(id.vars = c("x", "y", "layer")) %>% 
-  mutate(year = as.numeric(L1)) 
 
-pred_data$L1 <- pred_data$L1 %>% as.numeric %>% as.factor
+pred_data <- lapply(pred_data, 
+                    FUN = as.data.frame, 
+                    xy = TRUE, 
+                    na.rm = TRUE) %>% 
+             reshape2::melt(id.vars = c("x", "y", "layer")) %>% 
+             mutate(year = as.numeric(L1)) 
+
+pred_data$L1 <- pred_data$L1 %>% 
+                as.numeric %>% 
+                as.factor
 
 years_list <- seq(-14500, -14400, by = 1)
 
 levels(pred_data$year) <- unlist(lapply(years_list, FUN=function(x)last(x)))
-pred_data$year <- pred_data$year %>% as.character %>% as.numeric
+
+pred_data$year <- pred_data$year %>% 
+                  as.character %>% 
+                  as.numeric
 ```
 
 ## Plotting the data {.tabset .tabset-pills}
@@ -189,9 +273,13 @@ Furthermore, we have provided a graphical illustration of the fluctuations in th
 ```{r}
 
 present_prediction %>% ggplot() +
-  geom_raster(aes(x = x, y = y, fill = layer)) +
+  geom_raster(aes(x = x, 
+                  y = y, 
+                  fill = layer)) +
   scale_fill_viridis_c() +
-  theme_bw() + theme(axis.title.x = element_blank(), axis.title.y = element_blank()) 
+  theme_bw() + 
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) 
 
 ```
 
@@ -207,12 +295,20 @@ gg <- ggplot(
   geom_raster() +
   scale_fill_viridis_c() +
   labs(title = "Year: {current_frame}") +
-  theme_minimal() + theme(axis.title.x = element_blank(), axis.title.y = element_blank()) 
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) 
 
-options(gganimate.dev_args = list(width = 600, height = 400))
-gganim <- gg + transition_manual(year)
+options(gganimate.dev_args = list(width = 600, 
+                                  height = 400))
+gganim <- gg + 
+  transition_manual(year)
 
-animate(gganim, duration = 60, width = 600, height = 400, renderer = gifski_renderer())
+animate(gganim, 
+        duration = 60, 
+        width = 600, 
+        height = 400, 
+        renderer = gifski_renderer())
 
 ```
 
@@ -229,9 +325,13 @@ mean_data <- pred_data %>%
 
 
 mean_data %>% ggplot() +
-  geom_raster(aes(x = x, y = y, fill = th_layer)) +
+  geom_raster(aes(x = x, 
+                  y = y, 
+                  fill = th_layer)) +
   scale_fill_viridis_c() +
-  theme_bw() + theme(axis.title.x = element_blank(), axis.title.y = element_blank()) 
+  theme_bw() + 
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) 
 
 ```
 

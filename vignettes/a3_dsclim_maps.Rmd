@@ -40,82 +40,160 @@ slope = function(x, t) {
 
 
 ```{r include=FALSE}
-folder <- "../../Output"
+folder <- "../data/dsclim"
 var <- "tas"
 ```
 
 ## Periods selection and parameters calculation.
 
-One of the key applications of the package is to facilitate the study of spatio-temporal patterns during the selected period in our study area. This is a crucial aspect of biogeographical studies, where climate stability is a significant factor. For example, we select the specific time periods of interest and load the corresponding data, calculating two parameters for each period. The Median Absolute Deviation and the slope are two metrics that provide valuable insights into climate stability. The Median Absolute Deviation offers a proxy for understanding the long-term variations in climate, while the slope serves as an indicator of the predominant direction of these changes. Once the computational work is complete, we save our example results and plot them for analysis.
+One of the key applications of the package is to facilitate the study of spatio-temporal patterns during the selected period in our study area. This is a crucial aspect of biogeographical studies, where climate stability is a significant factor. For example, we select the specific time periods of interest and load the corresponding data, calculating two parameters for each period. The Median Absolute Deviation and the slope are two metrics that provide valuable insights into climate stability. The Median Absolute Deviation (MAD) offers a proxy for understanding the long-term variations in climate, while the slope serves as an indicator of the predominant direction of these changes. Once the computational work is complete, we save our example results and plot them for analysis.
 
-### -14650, -14400 period, Median Absolute Deviation
+### Warming in the Bolling-Allerod (14.650 to 14.400 years BP)
+
+Here, we analyse spatio-temporal patterns for a period of 500 years during the Bølling-Allerød, a period of quick warming after the oldest Dryas.
+
+#### Median Absolute Deviationø
+
+In this section, we calculate the MAD of temperatures for the period 14.650 years BP and 14.400 years BP. MAD values range from ~3 to >12, indicating a contrasting levels of variation in the study region. As expected, coastal areas have been more stables while the more variable areas include the Sahara.
 
 ```{r}
-tas_ds <- read_dsclim(folder, var, -14650, -14400, proxy = TRUE)
-t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+tas_ds <- read_dsclim(folder, 
+                      var, 
+                      -14650, 
+                      -14400, 
+                      proxy = TRUE)
+t <- st_get_dimension_values(tas_ds, "time") %>% 
+     as.numeric(.)/(365*24*60*60)
 
-# reduce_data(-14650, -14400, folder=folder, var=var, FUN="mad", size=50)
-out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN=mad)
-write_stars(out_mad, "mad_-14650_-14400.tif", chunk_size = c(50, 50))
-plot(raster::raster("mad_-14650_-14400.tif"))
+out_mad <- stars::st_apply(tas_ds, 
+                           MARGIN = c(1, 2), 
+                           FUN=mad)
+
+write_stars(out_mad, "mad_-14650_-14400.tif", 
+            chunk_size = c(50, 50))
+
+"mad_-14650_-14400.tif" %>% terra::rast() %>% terra::plot()
 ```
 
-![Figure 1.](figures/a3/a3_fig_p1_mad.png)
+![Figure 1. Median Absolute Deviation values of temperatures during 500 years of warming during the Bolling-Allerod.](figures/a3/a3_fig_p1_mad.png)
 
-### -14650, -14400 period, Slope
+#### Slope
+
+When analyzing the slope during the same period in the study area, all values are positive, indicating that the whole study area underwent warming. Again slopes values ranged from 0.002 to 0.014, indicating contrasting patterns of warning among areas. More specifically, according to the dsclim dataset, mountaineous regions (like the Pyrenees or the Atlas) has undergone more warning than lower and flatter areas.
 
 ```{r} 
-out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
-write_stars(out_slope, "slope_-14650_-14400.tif", chunk_size = c(50, 50))
-plot(raster::raster("slope_-14650_-14400.tif"))
+out_slope <- stars::st_apply(tas_ds, 
+                             MARGIN = c(1, 2), 
+                             FUN = slope, 
+                             t = t)
+
+write_stars(out_slope, 
+            "slope_-14650_-14400.tif",
+            chunk_size = c(50, 50))
+
+"slope_-14650_-14400.tif" %>% terra::rast() %>% plot()
 ```
 
-![Figure 2.](figures/a3/a3_fig_p1_slope.png)
+![Figure 2. Rate of change (slope) of temperatures during 500 years of warming during the Bolling-Allerod.](figures/a3/a3_fig_p1_slope.png)
 
-### -18149, -17150 period, Median Absolute Deviation
+### Cooling at the end of the Pleistocene (18.149 to -17.150 years BP)
+
+Here, we analyze 1.000 years of progressive cooling at the end of the Pleistocene.
+
+#### Median Absolute Deviation
+
+MAD values range from ~3 to ~11, indicating a slightly smaller range of variation than during the warming in the Bolling-Allerod. The spatial pattern for such variation is quite similar between the two periods, with coastal areas being more stable, and the Sahara experiencing less stability.
 
 ```{r} 
-tas_ds <- read_dsclim(folder, var, -18149, -17150, proxy = TRUE)
-t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+tas_ds <- read_dsclim(folder,
+                      var, 
+                      -18149, 
+                      -17150, 
+                      proxy = TRUE)
+
+t <- st_get_dimension_values(tas_ds, "time") %>% 
+     as.numeric(.)/(365*24*60*60)
 
 # reduce_data(-18150, -17150, folder=folder, var=var, FUN="mad", size=50)
-out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = mad)
-write_stars(out_mad, "mad_-18149_-17150.tif", chunk_size = c(50, 50))
-plot(raster::raster("mad_-18149_-17150.tif"))
+out_mad <- stars::st_apply(tas_ds, 
+                           MARGIN = c(1, 2), 
+                           FUN = mad)
+
+write_stars(out_mad, 
+            "mad_-18149_-17150.tif", 
+            chunk_size = c(50, 50))
+
+"mad_-18149_-17150.tif" %>% terra::rast() %>% plot()
 ```
 
-![Figure 3.](figures/a3/a3_fig_p2_mad.png)
+![Figure 3. Median Absolute Deviation values of temperatures during 1.000 years of cooling at the end of the Pleistocene.](figures/a3/a3_fig_p2_mad.png)
 
-### -18149, -17150 period, Slope
+#### Slope
+
+Slope values varied from -0.004 and >0, indicating that while most of the area underwent cooling, a few areas in the Sahara didn't have a temporal trend in change or even became a little warmer. The smaller range of values indicates also that the cooling was in general slower than the warming during the Bolling-Allerod.
 
 ```{r} 
-out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
-write_stars(out_slope, "slope_-18149_-17150.tif", chunk_size = c(50, 50))
-plot(raster::raster("slope_-18149_-17150.tif"))
+out_slope <- stars::st_apply(tas_ds, 
+                             MARGIN = c(1, 2), 
+                             FUN = slope, 
+                             t = t)
+
+write_stars(out_slope, 
+            "slope_-18149_-17150.tif", 
+            chunk_size = c(50, 50))
+
+"slope_-18149_-17150.tif" %>% terra:rast() %>% terra::plot()
 ```
 
-![Figure 4.](figures/a3/a3_fig_p2_slope.png)
+![Figure 4. Rate of change (slope) in temperatures during 1.000 years of cooling at the end of the Pleistocene.](figures/a3/a3_fig_p2_slope.png)
 
-### -22000, 40 period, Median Absolute Deviation
+### Last deglaciation (between 22 ky BP to present)
+
+In this last example, we analyze the same spatio-temporal variables for the whole study period. Identifying areas subjected to more stability and with more clear temporal trends of warming.
+
+#### Median Absolute Deviation
+
+MAD values range between ~3 and > 12. Those values are in a similar range than what we found for the warming during the Bolling-Allerod, which is not surprising given the range and rate of change during this period. Again, the more stable areas have been the coastal areas and montainous areas (e.g. Pyrenees or Atlas).
 
 ```{r} 
-tas_ds <- read_dsclim(folder, var, -22000, 40, proxy = TRUE)
-t <- st_get_dimension_values(tas_ds, "time") %>% as.numeric(.)/(365*24*60*60)
+tas_ds <- read_dsclim(folder, 
+                      var, 
+                      -22000, 
+                      40, 
+                      proxy = TRUE)
+t <- st_get_dimension_values(tas_ds, "time") %>% 
+     as.numeric(.)/(365*24*60*60)
 
-out_mad <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = mad)
-write_stars(out_mad, "mad_-22000_40.tif", chunk_size = c(50, 50))
-plot(raster::raster("mad_-22000_40.tif"))
+out_mad <- stars::st_apply(tas_ds, 
+                           MARGIN = c(1, 2), 
+                           FUN = mad)
+
+write_stars(out_mad, 
+            "mad_-22000_40.tif", 
+            chunk_size = c(50, 50))
+
+"mad_-22000_40.tif" %>% terra::rast() %>% plot()
 ```
 
-![Figure 5.](figures/a3/a3_fig_p3_mad.png)
+![Figure 5. Median Absolute Deviation values of temperatures during the whole 22.000 years of climate oscillations (warmings and coolings) during the last deglaciation.](figures/a3/a3_fig_p3_mad.png)
 
-### -22000, 40 period, Slope
+### Slope
+
+Finally, slope shows the smallest values among the three periods, which is expected taking into account the length of the study period (22.000 years) and the relative stability at the beginning (end of glaciation) and end of the period (Holocene). The positive values indicate that the whole study area has undergone warming, with coastal areas and the Sahara experiencing smaller changes.
 
 ```{r} 
-out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t, PROGRESS = TRUE)
-write_stars(out_slope, "slope_-22000_40.tif", chunk_size = c(50, 50))
-plot(raster::raster("slope_-22000_40.tif"))
+out_slope <- stars::st_apply(tas_ds, 
+                             MARGIN = c(1, 2), 
+                             FUN = slope, 
+                             t = t, 
+                             PROGRESS = TRUE)
+
+write_stars(out_slope, 
+            "slope_-22000_40.tif", 
+            chunk_size = c(50, 50))
+
+"slope_-22000_40.tif" %>% terra::rast() %>% plot()
 ```
 
-![Figure 6.](figures/a3/a3_fig_p3_slope.png)
+![Figure 6. Rate of change (slope) in temperatures during the whole 22.000 years of climate oscillations (warmings and coolings) during the last deglaciation.](figures/a3/a3_fig_p3_slope.png)
 

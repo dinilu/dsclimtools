@@ -36,7 +36,7 @@ points <- data.frame(id = c(1, 2),
                      lat = c(41.5, 42.8)) %>% 
            sf::st_as_sf(coords = c("long", "lat"))
 
-data <- dsclimtools::read_dsclim( "../data", 
+data <- dsclimtools::read_dsclim( "../data/dsclim", 
                                   "tas", 
                                   start, 
                                   end, 
@@ -76,7 +76,7 @@ points <- data.frame(id = c(1, 2),
                      lat = c(41.5, 42.8)) %>% 
           sf::st_as_sf(coords = c("long", "lat"))
 
-data <- dsclimtools::read_dsclim( "../data", 
+data <- dsclimtools::read_dsclim( "../data/dsclim", 
                                   "pr", 
                                   start, 
                                   end, 
