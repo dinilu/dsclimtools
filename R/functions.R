@@ -78,12 +78,16 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 
   # files <- paste0(folder, "/TraCE21ka/", var, "/", var, y_seq, ".nc")
   files <- NULL
+  if(!is.null(y_seq$'FALSE') & !is.null(y_seq$'TRUE')){
+    stop("You requested to load data that include past and future data.
+         Please specify a time period that include past or future data only.")
+  }
   if(!is.null(y_seq$'FALSE')){
     files <- append(files, paste0(folder, "/trace21ka/", var, "/", var, y_seq$'FALSE', ".nc"))
   }
   if(!is.null(y_seq$'TRUE')){
     files <- append(files, paste0(folder, "/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
-    }
+  }
 
   if(length(files) > 1){
     data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy)

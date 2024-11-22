@@ -48,7 +48,7 @@ var <- "tas"
 
 One of the key applications of the package is to facilitate the study of spatio-temporal patterns during the selected period in our study area. This is a crucial aspect of biogeographical studies, where climate stability is a significant factor. For example, we select the specific time periods of interest and load the corresponding data, calculating two parameters for each period. The Median Absolute Deviation and the slope are two metrics that provide valuable insights into climate stability. The Median Absolute Deviation offers a proxy for understanding the long-term variations in climate, while the slope serves as an indicator of the predominant direction of these changes. Once the computational work is complete, we save our example results and plot them for analysis.
 
-## -14650, -14400 period, Median Absolute Deviation
+### -14650, -14400 period, Median Absolute Deviation
 
 ```{r}
 tas_ds <- read_dsclim(folder, var, -14650, -14400, proxy = TRUE)
@@ -62,7 +62,7 @@ plot(raster::raster("mad_-14650_-14400.tif"))
 
 ![Figure 1.](figures/a3/a3_fig_p1_mad.png)
 
-## -14650, -14400 period, Slope
+### -14650, -14400 period, Slope
 
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
@@ -72,7 +72,7 @@ plot(raster::raster("slope_-14650_-14400.tif"))
 
 ![Figure 2.](figures/a3/a3_fig_p1_slope.png)
 
-## -18149, -17150 period, Median Absolute Deviation
+### -18149, -17150 period, Median Absolute Deviation
 
 ```{r} 
 tas_ds <- read_dsclim(folder, var, -18149, -17150, proxy = TRUE)
@@ -86,7 +86,7 @@ plot(raster::raster("mad_-18149_-17150.tif"))
 
 ![Figure 3.](figures/a3/a3_fig_p2_mad.png)
 
-## -18149, -17150 period, Slope
+### -18149, -17150 period, Slope
 
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t)
@@ -96,7 +96,7 @@ plot(raster::raster("slope_-18149_-17150.tif"))
 
 ![Figure 4.](figures/a3/a3_fig_p2_slope.png)
 
-## -22000, 40 period, Median Absolute Deviation
+### -22000, 40 period, Median Absolute Deviation
 
 ```{r} 
 tas_ds <- read_dsclim(folder, var, -22000, 40, proxy = TRUE)
@@ -109,7 +109,7 @@ plot(raster::raster("mad_-22000_40.tif"))
 
 ![Figure 5.](figures/a3/a3_fig_p3_mad.png)
 
-## -22000, 40 period, Slope
+### -22000, 40 period, Slope
 
 ```{r} 
 out_slope <- stars::st_apply(tas_ds, MARGIN = c(1, 2), FUN = slope, t = t, PROGRESS = TRUE)
