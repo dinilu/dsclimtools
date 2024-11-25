@@ -282,7 +282,6 @@ present_prediction %>% ggplot() +
 
 ```{r}
 
-
 present_prediction <- Present_bioclim %>% 
                       raster::mask(topo14_mask) %>% 
                       predict(model, type = "response") %>% 
@@ -304,7 +303,7 @@ present_prediction %>%
 ![Figure 4. Current predicted distribution.](figures/a4/binary_present_map.png){width="640"}
 
 
-## Model projection under past conditions {.tabset .tabset-pills}
+## Model projection under past conditions
 
 Now, we use the model to project under past climate conditions.
 
