@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 It is standard practice in biogeography to derive new variables from existing climatic data, as this makes it easier to interpret the data ecologically. One example of this is the calculation of bioclimate variables. Furthermore, these variables are typically employed as inputs for ecological modelling tools, such as Species Distribution Models (SDMs), which correlate them with species occurrences to estimate potential distribution across an area of interest. In this example, we have calculated a set of bioclimatic variables for the specified study periods and used them to calibrate a Species Distribution Model (SDM) which was projected into past conditions.
 
+
 ## Dependencies and functions
 
 First, we load several packages and define a couple of functions to convert the star object into a raster stack (we transform our data from cube format into a stack to use typical functions of spatial analysis) and to project SDMs into the bioclim variables at different time periods.
@@ -49,7 +50,8 @@ model.projection <- function(p, predictors_list, land, model) {
 }
 ```
 
-## Period selection
+
+## Defining periods
 
 In order to load dsclim dataset, we define two periods of interest. The first one is contemporary to be used when fitting SDMs. The second one is past to project SDMs into a hindcasting exercise.
 
@@ -62,11 +64,13 @@ past_start <- -14500
 past_end <- -14400
 ```
 
+
 ## Load downscaled climatic data (dsclim) {.tabset .tabset-pills}
 
 Now, we load the climatic data for the specified period and three variables (e.g. maximum temperature, minimum temperature and precipitation). The `read_dsclim()` function return a `stars` object that we afterwards convert into a list of raster stack (one for each year) using the `stars_to_stack` function. The stacks include 12 layers, representing the twelve months in each year.
 
 We repeat the same for the two periods: present and past.
+
 
 ### Present
 
@@ -104,9 +108,12 @@ present_tmin <- lapply(seq(1, 360, by = 12),
 present_prec <- lapply(seq(1, 360, by = 12),
                        FUN = stars_to_stack, 
                        present_prec)
+
+plot(present_tmax[[1]])
 ```
 
-![Figure 1. Maximun Temperature](figures/a4/present_tmax.png){width="600"}
+![Figure 1. Maximun temperature in 1961.](figures/a4/present_tmax.png){width="600"}
+
 
 ### Past
 
@@ -144,15 +151,19 @@ past_tmin <- lapply(seq(1, 1212, by = 12),
 past_prec <- lapply(seq(1, 1212, by = 12),
                FUN = stars_to_stack, 
                past_prec)
+
+plot(past_tmax[[1]])
 ```
 
-![Figure 2. Maximun Temperature](figures/a4/past_tmax.png){width="600"}
+![Figure 2. Maximun Temperature for 12500 years BP.](figures/a4/past_tmax.png){width="600"}
 
-## Bioclimatic variables calculation {.tabset .tabset-pills}
 
-Then, we can calculate the 19 bioclimatic variables for each year in the two periods. The result is, hence, stored as a list of raster stacks with 19 layers (19 bioclimatic variables). For present, we calculate the mean of the 19 variables across the 30 years of the period to create a unique grid, which will then be used in model calibration. 
+## Calculate bioclimatic variables {.tabset .tabset-pills}
+
+We can calculate the 19 bioclimatic variables for each year in the two periods. The result is, hence, stored as a list of raster stacks with 19 layers (19 bioclimatic variables). For present, we calculate the mean of the 19 variables across the 30 years of the period to create a unique grid, which will then be used in model calibration. 
 
 Then, we selected the same subset of variables in both periods following the same criteria than the tutorial in [https://rspatial.org/raster/sdm/raster_SDM.pdf](https://rspatial.org/raster/sdm/raster_SDM.pdf). Note that our intent with this vignette is solely for illustrative purposes. In actual modelling, it would be advisable to select variables based on their ecological impact on the study species and their correlation.
+
 
 ### Present
 
@@ -168,6 +179,7 @@ Present_bioclim <- stack(reduce(present_bio_list, `+`) / length(present_bio_list
                    subset(c(1, 5, 6, 7, 8, 12, 16, 17))
 ```
 
+
 ### Past
 
 ```{r}
@@ -178,7 +190,7 @@ past_bio_list <- mapply(dismo::biovars,
                    past_tmax, 
                    SIMPLIFY = FALSE) %>% 
   lapply(function(x){
-    subset(x, c(1,5,6,7,8,12,16,17))
+    subset(x, c(1, 5, 6, 7, 8, 12, 16, 17))
   })
 ```
 
@@ -243,18 +255,15 @@ model <-  glm(pb ~ bio1 + bio5 + bio6 + bio7 + bio8 + bio12 + bio16 + bio17,
 
 Then, we can project the model over current conditions and plot it both in its continuous or binary form. For the binary prediction, we threshold the prediction using the 0.7 threshold.
 
+
+### Continuous prediction
+
 ```{r}
 
 present_prediction <- Present_bioclim %>% 
                       raster::mask(topo14_mask) %>% 
                       predict(model, type = "response") %>% 
                       as.data.frame(xy = TRUE) %>% na.omit()
-```
-
-
-### Continuous prediction
-
-```{r}
 
 present_prediction %>% ggplot() +
   geom_raster(aes(x = x, 
@@ -272,6 +281,12 @@ present_prediction %>% ggplot() +
 ### Binary prediction
 
 ```{r}
+
+
+present_prediction <- Present_bioclim %>% 
+                      raster::mask(topo14_mask) %>% 
+                      predict(model, type = "response") %>% 
+                      as.data.frame(xy = TRUE) %>% na.omit()
 
 present_prediction %>% 
   mutate(th_layer = case_when(layer >= 0.7 ~ 1,
@@ -291,7 +306,7 @@ present_prediction %>%
 
 ## Model projection under past conditions {.tabset .tabset-pills}
 
-Furthermore, we have provided a graphical illustration of the fluctuations in the potential distribution of the species over past conditions. Additionally, we have calculated the pixel mean value for the whole period and identified those which have a mean value greater than 0.7.
+
 
 ```{r}
 
@@ -324,6 +339,11 @@ past_prediction$year <- past_prediction$year %>%
                   as.character() %>% 
                   as.numeric()
 ```
+
+
+## Model projection under past conditions {.tabset .tabset-pills}
+
+Furthermore, we provide a graphical illustration of the fluctuations in the potential distribution of the species over past conditions. Additionally, we have calculated the pixel mean value for the whole period and identified those which have a mean value greater than 0.7.
 
 
 ### Dynamic projection
@@ -360,6 +380,7 @@ animate(gganim,
 ### Binary mean projection
 
 ```{r}
+
 mean_data <- past_prediction %>% 
   group_by(x, y) %>% 
   summarize(mean_layer = mean(layer)) %>% 
