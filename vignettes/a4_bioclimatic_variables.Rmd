@@ -306,7 +306,7 @@ present_prediction %>%
 
 ## Model projection under past conditions {.tabset .tabset-pills}
 
-
+Now, we use the model to project under past climate conditions.
 
 ```{r}
 
@@ -341,7 +341,7 @@ past_prediction$year <- past_prediction$year %>%
 ```
 
 
-## Model projection under past conditions {.tabset .tabset-pills}
+## Plotting past projections {.tabset .tabset-pills}
 
 Furthermore, we provide a graphical illustration of the fluctuations in the potential distribution of the species over past conditions. Additionally, we have calculated the pixel mean value for the whole period and identified those which have a mean value greater than 0.7.
 
@@ -398,5 +398,5 @@ mean_data %>% ggplot() +
 
 ```
 
-![Figure 6. Thresholded (binary) mean predicted distribution under past climate conditions.](figures/a4/binary_past_map.png){width="631"}
+![Figure 6. Thresholded (binary) mean predicted distribution under past climate conditions.](figures/a4/binary_past_map.png) {width="631"}
  
