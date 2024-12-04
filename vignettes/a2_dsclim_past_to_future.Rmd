@@ -51,7 +51,7 @@ figure <- ggplot() +
   geom_line(data = drop_units(as.data.frame(past1)), 
                      aes(x = time, 
                          y = tas), 
-                     color = "#56B4E9", 
+                     color = "#E69F00", 
                      alpha = 0.3) + 
   geom_line(data = drop_units(as.data.frame(aggregate(past1, 
                                                                by = calendar_dates(10, 41, "1 year"), 
@@ -59,12 +59,12 @@ figure <- ggplot() +
                                                                na.rm = TRUE))), 
                      aes(x = time, 
                          y = tas), 
-                     color = "#56B4E9") + 
+                     color = "#E69F00") + 
   
   geom_line(data = drop_units(as.data.frame(past2)), 
                      aes(x = time, 
                          y = tas), 
-                     color = "#E69F00", 
+                     color = "#56B4E9", 
                      alpha = 0.3) + 
   geom_line(data = drop_units(as.data.frame(aggregate(past2, 
                                                                by = calendar_dates(10, 41, "1 year"), 
@@ -72,7 +72,7 @@ figure <- ggplot() +
                                                                na.rm = TRUE))), 
                      aes(x = time, 
                          y = tas), 
-                     color = "#E69F00")
+                     color = "#56B4E9")
 ```
 
 ![Figure 1. Temperatures for two points of the study area during the calibration period (1960-1990)](figures/a2/a2_fig_past.png)
