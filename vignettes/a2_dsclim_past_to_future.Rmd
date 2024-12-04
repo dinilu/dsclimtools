@@ -203,7 +203,7 @@ figure <- figure +
 figure
 ```
 
-![Figure 2. Temperatures for the same two points of the study area for the calibration period (1960-1990) and the average future projections among three climate models (e.g. CESM1-CAM5, CSIRO-Mk3-6-0, and IPSL-CM5A-MR) under four different Representative Concentration Pathways (RCPs; rcp2.6, rcp4.5, rcp6.0, rcp8.5).](figures/a2/a2_fig_beautified.png)
+![Figure 2. Temperatures for the same two points of the study area for the calibration period (1960-1990) and the average future projections among three climate models (e.g. CESM1-CAM5, CSIRO-Mk3-6-0, and IPSL-CM5A-MR) under four different Representative Concentration Pathways (RCPs; rcp2.6, rcp4.5, rcp6.0, rcp8.5).](figures/a2/a2_fig_beautified.jpg)
 
 The objective of this plot is to demonstrate the gradual transition between past and future data, as well as the divergence between the various climate change scenarios.
 
