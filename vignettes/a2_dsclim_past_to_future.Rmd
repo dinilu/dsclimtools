@@ -75,7 +75,7 @@ figure <- ggplot() +
                      color = "#56B4E9")
 ```
 
-![Figure 1. Temperatures for two points of the study area during the calibration period (1960-1990)](figures/a2/a2_fig_past.png)
+![Figure 1. Temperatures for two points of the study area during the calibration period (1960-1990)](figures/a2/a2_fig_past.jpg)
 
 ## Extracting future data in point locations for different climate change scenarios.
 
