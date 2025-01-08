@@ -3,6 +3,7 @@ template:
   bootstrap: 5
 references:
 - title: All functions
+  desc:
   contents:
   - .read_dsclim
   - read_dsclim
@@ -11,8 +12,6 @@ references:
   - read_trace
   - kelvin2celsius
   - flux2mm
-
-
 articles:
 - title: Articles
   navbar: ~
