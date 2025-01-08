@@ -2,19 +2,22 @@
 % Please edit documentation in R/functions.R
 \name{flux2mm}
 \alias{flux2mm}
-\title{Title}
+\title{Flux 2 millimetters}
 \usage{
 flux2mm(data)
 }
 \arguments{
-\item{data}{TBW}
+\item{data}{A stars object with precipitation in flux}
 }
 \value{
-TBW
+A stars object with precipitation in millimeters
 }
 \description{
-Title
+Transform stars objects from precipitation in flux to precipitation in millimeters
 }
 \examples{
-# TBW
+\dontrun{
+data <- read_trace("data/TraCE21ka/", "PRECC")
+flux2mm(data)
+}
 }

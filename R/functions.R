@@ -1,4 +1,4 @@
-#' Load a cropped version of downscaled TraCE21ka .nc files
+#' Load a cropped version of dsclim (downscaled TraCE21ka) .nc files
 #'
 #' @param file A string with full name (path and file name) of the .nc file to be loaded from the hard disk drive.
 #' @param sf A sf object from the sf package to be used as template or mask to crop the downscaled trace .nc file.
@@ -8,8 +8,6 @@
 #' @export
 #'
 #' @import stars sf
-#'
-#' @examples # TBW
 .read_dsclim <- function(file, sf = NULL, proxy) {
   data <- stars::read_stars(file, proxy = proxy)
   if(!is.null(sf)){
@@ -21,24 +19,38 @@
 
 
 
-#' Load downscaled TraCE21ka files by years.
+#' Load dsclim (downscaled TraCE21ka) files by years.
 #'
-#' @param folder A character string with the path to the folder where the downscaled TraCE21ka files, ordered in folders by variables.
+#' @param folder A character string with the path to the folder where the dsclim (downscaled TraCE21ka) files, ordered in folders by variables.
 #' @param var A character string with the name of the variables to be loaded.
-#' @param y_start A number with the first year to be loaded.
+#' @param y_start A number with the first year to be loaded. Years are provided as cal BP (1950 calendar year = 1 cal BP)
 #' @param y_end A number with the last year to be loaded.
-#' @param rcp TBW
-#' @param gcm TBW
-#' @param calendar_dates A logical value indicating whether dates should be corrected to calendar dates.
-#' @param sf A sf object to be used for cropping the object.
+#' @param rcp When loading future data (1991-2100), the Representative Concentration Pathway that want to be loaded. Valid values are: "rcp2.6", "rcp4.5", "rcp6.0", or "rcp8.5".
+#' @param gcm When loading future data (1991-2100), the General Circulation Models that want to be loaded. Valid values are: "CESM1-CAM5", "CSIRO-Mk3-6-0", or "IPSL-CM5A-MR".
+#' @param calendar_dates A logical value indicating whether dates should be corrected to calendar dates in the output.
+#' @param sf A sf object to be used for cropping the object, can be points or polygons.
 #' @param proxy A logical value indicating whether the data should be loaded as a stars_proxy object (TRUE) or as a stars object (FALSE).
 #'
-#' @return A stars object with the downscaled TraCE21ka data, cropped using the sf object if provided.
+#' @return A stars object with the dsclim (downscaled TraCE21ka) data, cropped using the sf object if provided.
 #'
 #' @details Years should be in the format calibrated Before Present (e.g. 0 for loading year 1950 in the gregorian calendar).
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' read_dsclim("data/dsclim/",
+#'             var = "tasmax",
+#'             -22000,
+#'             -19950,
+#'             proxy = FALSE)
+#' read_dsclim("data/dsclim/", var = "tasmax",
+#'             41,
+#'             150,
+#'             rcp = "rcp2.6",
+#'             gcm = "CESM1-CAM5",
+#'             calendar_dates = TRUE,
+#'             proxy = FALSE)
+#' }
 read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, calendar_dates = FALSE, sf = NULL, proxy = TRUE){
 
   if(proxy & calendar_dates){
@@ -124,7 +136,12 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 #' @return A vector with dates from the y_start to the y_end years at the time intervals specified by "by" argument.
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' calendar_dates(41, 150, by = "1 month")
+#' calendar_dates(41, 150, by = "1 year")
+#' calendar_dates(-22000, 150, by = "1 year")
+#' }
 calendar_dates <- function(y_start, y_end, by = "1 month"){
   cal_start <- lubridate::ymd("1950-01-01") + lubridate::years(y_start)
   cal_end <- lubridate::ymd("1950-12-01") + lubridate::years(y_end)
@@ -145,7 +162,21 @@ calendar_dates <- function(y_start, y_end, by = "1 month"){
 #' @return A stars object as in data argument but with changed time dimension.
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' data <- read_dsclim("data/dsclim/",
+#'                     var = "tasmax",
+#'                     41,
+#'                     150,
+#'                     rcp = "rcp2.6",
+#'                     gcm = "CESM1-CAM5",
+#'                     calendar_dates = FALSE,
+#'                     proxy = FALSE)
+#' time_2_calendar_dates(data,
+#'                       41,
+#'                       150,
+#'                       by = "1 month")
+#' }
 time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
   cal_dates <- calendar_dates(y_start, y_end, by = by)
   # stars::st_dimensions(data)$time$values <- cal_dates
@@ -158,14 +189,19 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 
 #' Read original TraCE21ka datasets
 #'
-#' @param folder TBW
-#' @param var TBW
-#' @param sf TBW
+#' Read original TraCE21ka data, returning a stars object. This function differs from the ones in the dsclim package, which return the data in the format of the climate4r framework.
 #'
-#' @return TBW
+#' @param folder character string indicating the path to the folder with the TraCE21ka dataset.
+#' @param var character string indicating the name of the variable that is to be readed.
+#' @param sf a sf vector object for which the TraCE21ka data should be limited (cropped).
+#'
+#' @return The function returns an stars object, usually in the form of raster data, except if the argument sf is provided, in which case the object is a vector stars object.
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' read_trace("data/TraCE21ka/", "TSMX")
+#' }
 read_trace <- function(folder, var, sf = NULL){
   # folder <- "../../Public/Data/TraCE21ka/"
   # var <- "PRECC"
@@ -198,14 +234,20 @@ if(!is.null(sf)){
 }
 
 
-#' Transform stars objects from degrees kelvin to degrees celsius
+#' Degrees Kelvin to Celsius
 #'
-#' @param data A stars object with temperature as degrees kelvin.
+#' Transform stars objects from degrees Kelvin to degrees Celsius
 #'
-#' @return TBW
+#' @param data A stars object with temperature in degrees Kelvin.
+#'
+#' @return A stars object with the temperature in degrees Celsius
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' data <- read_trace("data/TraCE21ka/", "TSMX")
+#' kelvin2celsius(data)
+#' }
 kelvin2celsius <- function(data) {
   var <- names(data)
   data_class <- class(data[[var]])
@@ -218,14 +260,20 @@ kelvin2celsius <- function(data) {
 }
 
 
-#' Title
+#' Flux 2 millimetters
 #'
-#' @param data TBW
+#' Transform stars objects from precipitation in flux to precipitation in millimeters
 #'
-#' @return TBW
+#' @param data A stars object with precipitation in flux
+#'
+#' @return A stars object with precipitation in millimeters
 #' @export
 #'
-#' @examples # TBW
+#' @examples
+#' \dontrun{
+#' data <- read_trace("data/TraCE21ka/", "PRECC")
+#' flux2mm(data)
+#' }
 flux2mm <- function(data){
   var <- names(data)
   data_class <- class(data[[var]])

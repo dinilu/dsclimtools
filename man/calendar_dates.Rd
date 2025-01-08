@@ -20,5 +20,9 @@ A vector with dates from the y_start to the y_end years at the time intervals sp
 Create a calendar dates by specified time intervals.
 }
 \examples{
-# TBW
+\dontrun{
+calendar_dates(41, 150, by = "1 month")
+calendar_dates(41, 150, by = "1 year")
+calendar_dates(-22000, 150, by = "1 year")
+}
 }

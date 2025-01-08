@@ -22,5 +22,18 @@ A stars object as in data argument but with changed time dimension.
 Modify a stars object to change the time dimension to calendar years between specified starting and ending years.
 }
 \examples{
-# TBW
+\dontrun{
+data <- read_dsclim("data/dsclim/",
+                    var = "tasmax",
+                    41,
+                    150,
+                    rcp = "rcp2.6",
+                    gcm = "CESM1-CAM5",
+                    calendar_dates = FALSE,
+                    proxy = FALSE)
+time_2_calendar_dates(data,
+                      41,
+                      150,
+                      by = "1 month")
+}
 }

@@ -2,19 +2,22 @@
 % Please edit documentation in R/functions.R
 \name{kelvin2celsius}
 \alias{kelvin2celsius}
-\title{Transform stars objects from degrees kelvin to degrees celsius}
+\title{Degrees Kelvin to Celsius}
 \usage{
 kelvin2celsius(data)
 }
 \arguments{
-\item{data}{A stars object with temperature as degrees kelvin.}
+\item{data}{A stars object with temperature in degrees Kelvin.}
 }
 \value{
-TBW
+A stars object with the temperature in degrees Celsius
 }
 \description{
-Transform stars objects from degrees kelvin to degrees celsius
+Transform stars objects from degrees Kelvin to degrees Celsius
 }
 \examples{
-# TBW
+\dontrun{
+data <- read_trace("data/TraCE21ka/", "TSMX")
+kelvin2celsius(data)
+}
 }

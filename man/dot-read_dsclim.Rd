@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{.read_dsclim}
 \alias{.read_dsclim}
-\title{Load a cropped version of downscaled TraCE21ka .nc files}
+\title{Load a cropped version of dsclim (downscaled TraCE21ka) .nc files}
 \usage{
 .read_dsclim(file, sf = NULL, proxy)
 }
@@ -17,8 +17,5 @@
 A stars object with the downscaled trace data.
 }
 \description{
-Load a cropped version of downscaled TraCE21ka .nc files
-}
-\examples{
-# TBW
+Load a cropped version of dsclim (downscaled TraCE21ka) .nc files
 }
