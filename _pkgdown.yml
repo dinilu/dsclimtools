@@ -1,6 +1,18 @@
 url: http://dnietolugilde.com/dsclimtools/
 template:
   bootstrap: 5
+references:
+- title: All functions
+  contents:
+  - .read_dsclim
+  - read_dsclim
+  - calendar_dates
+  - time_2_calendar_dates
+  - read_trace
+  - kelvin2celsius
+  - flux2mm
+
+
 articles:
 - title: Articles
   navbar: ~
