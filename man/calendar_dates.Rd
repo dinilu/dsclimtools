@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{calendar_dates}
 \alias{calendar_dates}
-\title{Create a calendar dates by specified time intervals.}
+\title{Create calendar dates}
 \usage{
 calendar_dates(y_start, y_end, by = "1 month")
 }
@@ -17,7 +17,7 @@ calendar_dates(y_start, y_end, by = "1 month")
 A vector with dates from the y_start to the y_end years at the time intervals specified by "by" argument.
 }
 \description{
-Create a calendar dates by specified time intervals.
+Create calendar dates by specified time intervals.
 }
 \examples{
 \dontrun{

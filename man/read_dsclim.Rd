@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{read_dsclim}
 \alias{read_dsclim}
-\title{Load dsclim (downscaled TraCE21ka) files by years.}
+\title{Load dsclim files}
 \usage{
 read_dsclim(
   folder,

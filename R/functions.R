@@ -1,4 +1,6 @@
-#' Load a cropped version of dsclim (downscaled TraCE21ka) .nc files
+#' Load cropped dsclim files
+#'
+#' Load a cropped version of dsclim (downscaled TraCE21ka) .nc files.
 #'
 #' @param file A string with full name (path and file name) of the .nc file to be loaded from the hard disk drive.
 #' @param sf A sf object from the sf package to be used as template or mask to crop the downscaled trace .nc file.
@@ -19,6 +21,8 @@
 
 
 
+#' Load dsclim files
+#'
 #' Load dsclim (downscaled TraCE21ka) files by years.
 #'
 #' @param folder A character string with the path to the folder where the dsclim (downscaled TraCE21ka) files, ordered in folders by variables.
@@ -127,7 +131,9 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
 
 
 
-#' Create a calendar dates by specified time intervals.
+#' Create calendar dates
+#'
+#' Create calendar dates by specified time intervals.
 #'
 #' @param y_start A number with the first year for the required dates.
 #' @param y_end A number with the last year for the required dates.
@@ -187,7 +193,7 @@ time_2_calendar_dates <- function(data, y_start, y_end, by = "1 month") {
 
 
 
-#' Read original TraCE21ka datasets
+#' Read TraCE21ka datasets
 #'
 #' Read original TraCE21ka data, returning a stars object. This function differs from the ones in the dsclim package, which return the data in the format of the climate4r framework.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{read_trace}
 \alias{read_trace}
-\title{Read original TraCE21ka datasets}
+\title{Read TraCE21ka datasets}
 \usage{
 read_trace(folder, var, sf = NULL)
 }
