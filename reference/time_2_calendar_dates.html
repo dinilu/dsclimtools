@@ -76,7 +76,20 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># TBW</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_dsclim.html">read_dsclim</a></span><span class="op">(</span><span class="st">"data/dsclim/"</span>,</span></span>
+<span class="r-in"><span>                    var <span class="op">=</span> <span class="st">"tasmax"</span>,</span></span>
+<span class="r-in"><span>                    <span class="fl">41</span>,</span></span>
+<span class="r-in"><span>                    <span class="fl">150</span>,</span></span>
+<span class="r-in"><span>                    rcp <span class="op">=</span> <span class="st">"rcp2.6"</span>,</span></span>
+<span class="r-in"><span>                    gcm <span class="op">=</span> <span class="st">"CESM1-CAM5"</span>,</span></span>
+<span class="r-in"><span>                    calendar_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                    proxy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">time_2_calendar_dates</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                      <span class="fl">41</span>,</span></span>
+<span class="r-in"><span>                      <span class="fl">150</span>,</span></span>
+<span class="r-in"><span>                      by <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
