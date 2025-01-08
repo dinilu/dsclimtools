@@ -1,7 +1,7 @@
 url: http://dnietolugilde.com/dsclimtools/
 template:
   bootstrap: 5
-references:
+reference:
 - title: All functions
   desc:
   contents:
