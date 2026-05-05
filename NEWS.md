@@ -5,3 +5,7 @@
 # dsclimtools 1.0.0
 
 * First official release
+
+# dsclimtools 1.1.0
+
+* Fix the loading function (read_dsclim) to use a temporal virtual raster (vrt) to load the netcdf packages. Dependencies updates seems to crash our function, and this was the only working solution.

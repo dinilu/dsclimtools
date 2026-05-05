@@ -9,7 +9,7 @@
 #' @return A stars object with the downscaled trace data.
 #' @export
 #'
-#' @import stars sf
+#' @import stars
 .read_dsclim <- function(file, sf = NULL, proxy) {
   data <- stars::read_stars(file, proxy = proxy)
   if(!is.null(sf)){
@@ -38,6 +38,7 @@
 #' @return A stars object with the dsclim (downscaled TraCE21ka) data, cropped using the sf object if provided.
 #'
 #' @details Years should be in the format calibrated Before Present (e.g. 0 for loading year 1950 in the gregorian calendar).
+#' @import sf ncdf4
 #' @export
 #'
 #' @examples
@@ -83,16 +84,10 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     }
   }
 
-  # if(y_start < 0 & y_end > 0){
-  #   y_seq <- c(y_start:-1, 1:y_end)
-  # } else {
-  #   y_seq <- c(y_start:y_end)
-  # }
   y_seq <- y_start:y_end
   y_seq <- y_seq[which(y_seq != 0)]
   y_seq <- split(y_seq, y_seq > 40)
 
-  # files <- paste0(folder, "/TraCE21ka/", var, "/", var, y_seq, ".nc")
   files <- NULL
   if(!is.null(y_seq$'FALSE') & !is.null(y_seq$'TRUE')){
     stop("You requested to load data that include past and future data.
@@ -105,12 +100,35 @@ read_dsclim <- function(folder, var, y_start, y_end, rcp = NULL, gcm = NULL, cal
     files <- append(files, paste0(folder, "/", rcp, "/", gcm, "/", var, "/", var, y_seq$'TRUE', ".nc"))
   }
 
-  if(length(files) > 1){
-    data <- lapply(files, FUN=.read_dsclim, sf = sf, proxy = proxy)
-    data <- do.call(c, data)
-  } else {
-    data <- .read_dsclim(files, sf = sf, proxy = proxy)
+  get_nc_time <- function(f) {
+    nc <- ncdf4::nc_open(f)
+    on.exit(ncdf4::nc_close(nc))
+    ncdf4::ncvar_get(nc, "time")
   }
+
+  if(!is.null(sf) & !any(class(sf))){
+    stop("You specified the argument 'sf' but the provided value/object is not of class 'sf'. Please provide an object of the class 'sf'.")
+  }
+
+  time_values <- unlist(lapply(files, get_nc_time))
+
+  stack_vrt <- file.path(tempdir(), "tasmax_stack.vrt")
+
+  sf::gdal_utils(
+    "buildvrt",
+    source = files,
+    destination = stack_vrt,
+    options = c("-separate")
+  )
+
+  data <- .read_dsclim(stack_vrt, sf = sf, proxy = proxy)
+
+  data <- st_set_dimensions(
+    data,
+    "band",
+    values = time_values,
+    names = "time"
+  )
 
   names(data) <- var
 
