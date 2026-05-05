@@ -1,0 +1,49 @@
+# dsclimtools
+
+The goal of dsclimtools is to interact with the dsclim dataset. To do
+so, this package provide functions that allow to read the data into R
+objects of the `stars` class (from the `stars` package). It also provide
+a few functions to modify and manipulate these objects (e.g. modify
+dates, change units, etcetera).
+
+## Installation
+
+You can install the development version of dsclimtools like so:
+
+``` r
+
+library(devtools)
+install_github("dinilu/dsclimtools")
+```
+
+# Package index
+
+## All functions
+
+- [`.read_dsclim()`](http://dnietolugilde.com/dsclimtools/reference/dot-read_dsclim.md)
+  : Load cropped dsclim files
+- [`read_dsclim()`](http://dnietolugilde.com/dsclimtools/reference/read_dsclim.md)
+  : Load dsclim files
+- [`calendar_dates()`](http://dnietolugilde.com/dsclimtools/reference/calendar_dates.md)
+  : Create calendar dates
+- [`time_2_calendar_dates()`](http://dnietolugilde.com/dsclimtools/reference/time_2_calendar_dates.md)
+  : Modify time to calendar years
+- [`read_trace()`](http://dnietolugilde.com/dsclimtools/reference/read_trace.md)
+  : Read TraCE21ka datasets
+- [`kelvin2celsius()`](http://dnietolugilde.com/dsclimtools/reference/kelvin2celsius.md)
+  : Degrees Kelvin to Celsius
+- [`flux2mm()`](http://dnietolugilde.com/dsclimtools/reference/flux2mm.md)
+  : Flux 2 millimetters
+
+# Articles
+
+### Articles
+
+- [1. Use dsclim past data with point
+  data](http://dnietolugilde.com/dsclimtools/articles/a1_dsclim_point_data.md):
+- [2. Combine dsclim data from past to
+  future](http://dnietolugilde.com/dsclimtools/articles/a2_dsclim_past_to_future.md):
+- [3. Analyse spatio-temporal
+  patterns](http://dnietolugilde.com/dsclimtools/articles/a3_dsclim_maps.md):
+- [4. Calculate bioclimatic variables and
+  SDM](http://dnietolugilde.com/dsclimtools/articles/a4_bioclimatic_variables.md):

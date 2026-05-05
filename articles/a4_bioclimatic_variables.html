@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dsclimtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
       <h1>4. Calculate bioclimatic variables and SDM</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/dinilu/dsclimtools/blob/v1.0.0/vignettes/a4_bioclimatic_variables.Rmd" class="external-link"><code>vignettes/a4_bioclimatic_variables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dinilu/dsclimtools/blob/master/vignettes/a4_bioclimatic_variables.Rmd" class="external-link"><code>vignettes/a4_bioclimatic_variables.Rmd</code></a></small>
       <div class="d-none name"><code>a4_bioclimatic_variables.Rmd</code></div>
     </div>
 
@@ -185,7 +185,7 @@ in each year.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">present_tmax</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa4%2Fpresent_tmax.png" width="600" alt="Figure 1. Maximun temperature in 1961."><div class="figcaption">Figure 1. Maximun temperature in 1961.</div>
+<img src="figures/a4/present_tmax.png" width="600" alt="Figure 1. Maximun temperature in 1961."><div class="figcaption">Figure 1. Maximun temperature in 1961.</div>
 </div>
 </div>
 <div class="tab-pane" id="past" role="tabpanel" aria-labelledby="past-tab">
@@ -227,7 +227,7 @@ in each year.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">past_tmax</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa4%2Fpast_tmax.png" width="600" alt="Figure 2. Maximun Temperature for 12500 years BP."><div class="figcaption">Figure 2. Maximun Temperature for 12500 years
+<img src="figures/a4/past_tmax.png" width="600" alt="Figure 2. Maximun Temperature for 12500 years BP."><div class="figcaption">Figure 2. Maximun Temperature for 12500 years
 BP.</div>
 </div>
 </div>
@@ -375,7 +375,7 @@ threshold the prediction using the 0.7 threshold.</p>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, </span>
 <span>        axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa4%2Fpresent_map.png" width="640" alt="Figure 3. Current predicted distribution."><div class="figcaption">Figure 3. Current predicted distribution.</div>
+<img src="figures/a4/present_map.png" width="640" alt="Figure 3. Current predicted distribution."><div class="figcaption">Figure 3. Current predicted distribution.</div>
 </div>
 </div>
 <div class="tab-pane" id="binary-prediction" role="tabpanel" aria-labelledby="binary-prediction-tab">
@@ -388,7 +388,7 @@ threshold the prediction using the 0.7 threshold.</p>
 <span>                      <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">present_prediction</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>th_layer <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">layer</span> <span class="op">&gt;=</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>th_layer <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">layer</span> <span class="op">&gt;=</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>                              <span class="va">layer</span> <span class="op">&lt;</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_raster</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, </span>
@@ -399,7 +399,7 @@ threshold the prediction using the 0.7 threshold.</p>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, </span>
 <span>        axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa4%2Fbinary_present_map.png" width="640" alt="Figure 4. Current predicted distribution."><div class="figcaption">Figure 4. Current predicted distribution.</div>
+<img src="figures/a4/binary_present_map.png" width="640" alt="Figure 4. Current predicted distribution."><div class="figcaption">Figure 4. Current predicted distribution.</div>
 </div>
 </div>
 </div>
@@ -482,7 +482,7 @@ period and identified those which have a mean value greater than
 <span>        height <span class="op">=</span> <span class="fl">400</span>, </span>
 <span>        renderer <span class="op">=</span> <span class="fu">gifski_renderer</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
-<img src="figures%2Fa4%2Fpast_timeseries.gif" alt="Figure 5. Dynamic projection of the model under past conditions."><div class="figcaption">Figure 5. Dynamic projection of the model under
+<img src="figures/a4/past_timeseries.gif" alt="Figure 5. Dynamic projection of the model under past conditions."><div class="figcaption">Figure 5. Dynamic projection of the model under
 past conditions.</div>
 </div>
 </div>
@@ -493,7 +493,7 @@ past conditions.</div>
 <span><span class="va">mean_data</span> <span class="op">&lt;-</span> <span class="va">past_prediction</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">layer</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>th_layer <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">mean_layer</span> <span class="op">&gt;=</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>th_layer <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">mean_layer</span> <span class="op">&gt;=</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>                              <span class="va">mean_layer</span> <span class="op">&lt;</span> <span class="fl">0.7</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mean_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -504,7 +504,7 @@ past conditions.</div>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, </span>
 <span>        axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="figures%2Fa4%2Fbinary_past_map.png" alt="Figure 6. Thresholded (binary) mean predicted distribution under past climate conditions.">
+<p><img src="figures/a4/binary_past_map.png" alt="Figure 6. Thresholded (binary) mean predicted distribution under past climate conditions.">
 {width=“631”}</p>
 </div>
 </div>
@@ -520,7 +520,7 @@ past conditions.</div>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
